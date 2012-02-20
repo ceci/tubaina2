@@ -1,10 +1,12 @@
 package br.com.caelum.tubaina.parser.latex;
 
+import br.com.caelum.tubaina.chunk.TableRowChunk;
 import br.com.caelum.tubaina.parser.Tag;
 
-public class TableRowTag implements Tag {
+public class TableRowTag implements Tag<TableRowChunk> {
 
-	public String parse(String string, String options) {
+	public String parse(TableRowChunk chunk) {
+		String string = chunk.getContent();
 		// Remove the & of the last column (put by the TableColumnTag)
 		int lastColumnBreak = string.lastIndexOf('&');
 		// There IS a column break

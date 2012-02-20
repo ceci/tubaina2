@@ -5,45 +5,33 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 
+import br.com.caelum.tubaina.chunk.ImageChunk;
 import br.com.caelum.tubaina.parser.Tag;
 
-public class ImageTag implements Tag {
+public class ImageTag implements Tag<ImageChunk> {
 
 	double pageWidth = 175;
 
-	public String parse(final String path, final String options) {
+	public String parse(ImageChunk chunk) {
+//	public String parse(final String path, final String options) {
 		String output = "\\begin{figure}[H]\n\\centering\n";
 
 		output = output + "\\includegraphics";
 
-		Pattern horizontalScale = Pattern.compile("(?s)(?i)w=(\\d+)%?");
-		Matcher sMatcher = horizontalScale.matcher(options);
+		double width = chunk.getActualWidth();
 
-		Pattern description = Pattern.compile("(?s)(?i)\"(.+?)\"");
-		Matcher dMatcher = description.matcher(options);
-
-		Pattern actualWidth = Pattern.compile("(?s)(?i)\\[(.+?)\\]");
-		Matcher aMatcher = actualWidth.matcher(options);
-
-		double width = Double.MAX_VALUE;
-		if (aMatcher.find()) {
-			width = Double.parseDouble(aMatcher.group(1));
-		}
-
-		if (sMatcher.find()) {
-			output = output + "[width=" + pageWidth * (Double.parseDouble(sMatcher.group(1)) / 100) + "mm]";
+		if (chunk.getWidthPercentage() != 0.0) {
+			output = output + "[width=" + (pageWidth * chunk.getWidthPercentage()) + "mm]";
 		} else if (width > pageWidth) {
 			output = output + "[width=\\textwidth]";
 		} else {
 			output = output + "[scale=1]";
 		}
 
-		String imgsrc = FilenameUtils.getName(path);
+		String imgsrc = FilenameUtils.getName(chunk.getPath());
 		output = output + "{" + imgsrc + "}\n";
 
-		if (dMatcher.find()) {
-			output = output + "\n\n\\caption{" + dMatcher.group(1) + "}\n\n";
-		}
+		output = output + "\n\n\\caption{" + chunk.getDescription() + "}\n\n";
 
 		output = output + "\\end{figure}\n\n";
 

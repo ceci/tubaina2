@@ -1,14 +1,13 @@
 package br.com.caelum.tubaina.parser.latex;
 
+import br.com.caelum.tubaina.chunk.NoteChunk;
 import br.com.caelum.tubaina.parser.Tag;
 
-public class NoteTag implements Tag {
+public class NoteTag implements Tag<NoteChunk> {
 
-	public String parse(String string, String title) {
-		// The first \n is the title/content sepparator
-		
-		return "\\begin{tubainabox}{" + ((title == null)?"Instructor's note":title)  + "}\n" +
-					string + "\n" +
+	public String parse(NoteChunk chunk) {
+		return "\\begin{tubainabox}{Instructor's note}\n" +
+				chunk.getContent() + "\n" +
 				"\\end{tubainabox}";
 	}
 }

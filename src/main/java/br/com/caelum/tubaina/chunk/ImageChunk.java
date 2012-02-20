@@ -31,5 +31,18 @@ public class ImageChunk extends AbstractChunk<ImageChunk> {
 			return "";
 		}
 	}
+	
+	public int getActualWidth() {
+		return width;
+	}
+	
+	public double getWidthPercentage() {
+		Pattern horizontalScale = Pattern.compile("(?s)(?i)w=(\\d+)%?");
+		Matcher sMatcher = horizontalScale.matcher(options);
 
+		if (sMatcher.find()) {
+			return Double.parseDouble(sMatcher.group(1)) / 100;
+		}
+		return 0.0;
+	}
 }

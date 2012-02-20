@@ -1,23 +1,25 @@
 package br.com.caelum.tubaina.parser.latex;
 
+import br.com.caelum.tubaina.chunk.ListChunk;
+import br.com.caelum.tubaina.chunk.ListType;
 import br.com.caelum.tubaina.parser.Tag;
 
-public class ListTag implements Tag {
+public class ListTag implements Tag<ListChunk> {
 
-	public String parse(String content, String options) {
+	public String parse(ListChunk chunk) {
+		ListType type = chunk.getType();
 		String listHeader = "\\begin{enumerate}[";
-		if (options.contains("number"))
+		switch (type) {
+		case NUMBER:
 			listHeader += "1)";
-		else if (options.contains("letter"))
+		case LETTER:
 			listHeader += "a)";
-		else if (options.contains("roman"))
+		case ROMAN:
 			listHeader += "I)";
-		else {
-			//If type is invalid, we use itemize environment
-			return "\\begin{itemize}" + content + "\\end{itemize}";
+		case BULLET:
+			return "\\begin{itemize}" + chunk.getContent() + "\\end{itemize}";
 		}
-		
-		return listHeader + "]\n" + content + "\n\\end{enumerate}";
+		return listHeader + "]\n" + chunk.getContent() + "\n\\end{enumerate}";
 	}
 
 }

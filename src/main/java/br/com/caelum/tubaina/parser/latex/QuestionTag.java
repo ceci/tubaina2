@@ -1,11 +1,12 @@
 package br.com.caelum.tubaina.parser.latex;
 
+import br.com.caelum.tubaina.chunk.QuestionChunk;
 import br.com.caelum.tubaina.parser.Tag;
 
-public class QuestionTag implements Tag {
+public class QuestionTag implements Tag<QuestionChunk> {
 
-	public String parse(String string, String options) {
-		return "\\item{" + string + "}";
+	public String parse(QuestionChunk chunk) {
+		return "\\item{" + chunk.getContent() + "}";
 	}
 
 }

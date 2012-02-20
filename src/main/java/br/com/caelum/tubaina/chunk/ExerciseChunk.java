@@ -21,4 +21,8 @@ public class ExerciseChunk extends CompositeChunk<ExerciseChunk> {
 	public static int getExerciseCount() {
 		return COUNT;
 	}
+	
+	public int getId() {
+		return id;
+	}
 }

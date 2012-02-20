@@ -1,9 +1,10 @@
 package br.com.caelum.tubaina.parser.latex;
 
+import br.com.caelum.tubaina.chunk.CodeChunk;
 import br.com.caelum.tubaina.parser.Indentator;
 import br.com.caelum.tubaina.parser.Tag;
 
-public class CodeTag implements Tag {
+public class CodeTag implements Tag<CodeChunk> {
 
 	private final Indentator indentator;
 
@@ -14,15 +15,17 @@ public class CodeTag implements Tag {
 		this.indentator = indentator;
 	}
 
-	public String parse(String string, String options) {
+	public String parse(CodeChunk chunk) {
+		String options = chunk.getOptions();
 		String chosenLanguage = options == null ? "" : options.trim().split(" ")[0].trim();	
 		if(chosenLanguage.isEmpty()){
 			chosenLanguage = "text";
 		}
 		String lineNumbers = options.contains("#") ? "[linenos, numbersep=5pt]": "";
 		
-		String indentedString = this.indentator.indent(string);
+		String indentedString = this.indentator.indent(chunk.getContent());
 		return CodeTag.BEGIN + lineNumbers + "{" + chosenLanguage + "}\n" + indentedString + CodeTag.END;
 	}
+
 	
 }
