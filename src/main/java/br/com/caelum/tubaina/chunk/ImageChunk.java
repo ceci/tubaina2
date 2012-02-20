@@ -3,23 +3,13 @@ package br.com.caelum.tubaina.chunk;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.com.caelum.tubaina.Chunk;
-import br.com.caelum.tubaina.parser.Tag;
 
-import com.google.inject.Inject;
-
-
-public class ImageChunk implements Chunk {
+public class ImageChunk extends AbstractChunk<ImageChunk> {
 
 	private final String options;
 	private final String path;
 	private final int width;
-	@Inject
-	private Tag<ImageChunk> tag;
 
-	public String asString() {
-		return tag.parse(this);
-	}
 	public ImageChunk(String path, String options, int width) {
 		this.options = options;
 		this.path = path;

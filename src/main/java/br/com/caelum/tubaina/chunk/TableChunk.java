@@ -4,25 +4,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.inject.Inject;
-
 import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.CompositeChunk;
-import br.com.caelum.tubaina.parser.Tag;
 
-public class TableChunk implements CompositeChunk {
+public class TableChunk extends CompositeChunk<TableChunk> {
 
-	private final List<Chunk> rows;
 	private boolean noBorder;
 	private String title;
-	@Inject
-	private Tag<TableChunk> tag;
 
-	public String asString() {
-		return tag.parse(this);
-	}
-	public TableChunk(final String options, final List<Chunk> rows) {
-		this.rows = rows;
+	public TableChunk(String options, List<Chunk> rows) {
+		super(rows);
 		this.noBorder = false;
 		this.title = "";
 		parseOptions(options);
@@ -41,17 +32,9 @@ public class TableChunk implements CompositeChunk {
 		}
 	}
 
-	public String getContent() {
-		String content = "";
-		for (Chunk c : rows) {
-			content += c.asString();
-		}
-		return content;
-	}
-
 	public int getMaxNumberOfColumns() {
 		int maxColumns = 0;
-		for (Chunk chunk : rows) {
+		for (Chunk chunk : body) {
 			if (chunk.getClass().equals(TableRowChunk.class)) {
 				TableRowChunk row = (TableRowChunk) chunk;
 				int columns = row.getNumberOfColumns();

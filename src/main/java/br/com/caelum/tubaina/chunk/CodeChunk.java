@@ -1,20 +1,11 @@
 package br.com.caelum.tubaina.chunk;
 
-import com.google.inject.Inject;
 
-import br.com.caelum.tubaina.Chunk;
-import br.com.caelum.tubaina.parser.Tag;
-
-public class CodeChunk implements Chunk {
+public class CodeChunk extends AbstractChunk<CodeChunk> {
 
 	private String content;
 	private final String options;
-	@Inject
-	private Tag<CodeChunk> tag;
 
-	public String asString() {
-		return tag.parse(this);
-	}
 	public CodeChunk(String content, String options) {
 		this.content = content;
 		this.options = options;
