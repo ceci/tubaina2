@@ -1,4 +1,4 @@
-package br.com.caelum.tubaina.parser.html;
+package br.com.caelum.tubaina.format.html;
 
 import java.io.File;
 import java.io.IOException;

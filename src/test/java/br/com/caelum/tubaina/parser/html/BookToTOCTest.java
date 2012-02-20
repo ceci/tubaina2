@@ -14,6 +14,7 @@ import org.junit.Test;
 import br.com.caelum.tubaina.Book;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.builder.BookBuilder;
+import br.com.caelum.tubaina.format.html.BookToTOC;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 

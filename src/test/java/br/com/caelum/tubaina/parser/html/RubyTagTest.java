@@ -8,6 +8,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import br.com.caelum.tubaina.format.html.RubyTag;
 import br.com.caelum.tubaina.parser.SimpleIndentator;
 import br.com.caelum.tubaina.resources.ResourceLocator;
 

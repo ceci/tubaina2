@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.caelum.tubaina.format.html.JavaTag;
 import br.com.caelum.tubaina.parser.SimpleIndentator;
 import de.java2html.Java2Html;
 import de.java2html.JavaSourceConversionSettings;

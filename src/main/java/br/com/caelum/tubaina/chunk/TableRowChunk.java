@@ -2,30 +2,39 @@ package br.com.caelum.tubaina.chunk;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.CompositeChunk;
-import br.com.caelum.tubaina.parser.Parser;
+import br.com.caelum.tubaina.parser.Tag;
 
 public class TableRowChunk implements CompositeChunk {
 
 	private List<Chunk> cols;
 
+	@Inject
+	private Tag<TableRowChunk> tag;
+
+	public String asString() {
+		return tag.parse(this);
+	}
+	
 	public TableRowChunk(List<Chunk> cols) {
 		this.cols = cols;
 	}
 
-	public String getContent(Parser p) {
+	public String getContent() {
 		String content = "";
 		for (Chunk c : cols) {
-			content += c.getContent(p);
+			content += c.asString();
 		}
-		return p.parseRow(content);
+		return content;
 	}
 
 	public int getNumberOfColumns() {
 		int columns = 0;
 		for (Chunk c : cols) {
-			if (c.getClass().equals(TableColumnChunk.class))
+			if (c instanceof TableColumnChunk)
 				columns++;
 		}
 		return columns;

@@ -4,6 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import br.com.caelum.tubaina.format.html.TableTag;
+
 public class TableTagTest {
 	
 	@Test

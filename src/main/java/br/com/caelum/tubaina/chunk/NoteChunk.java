@@ -2,31 +2,31 @@ package br.com.caelum.tubaina.chunk;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.CompositeChunk;
-import br.com.caelum.tubaina.parser.Parser;
+import br.com.caelum.tubaina.parser.Tag;
 
 public class NoteChunk implements CompositeChunk {
 
-	private final List<Chunk> title;
-
 	private final List<Chunk> body;
+	@Inject
+	private Tag<NoteChunk> tag;
 
-	public NoteChunk(List<Chunk> title, List<Chunk> body) {
-		this.title = title;
+	public String asString() {
+		return tag.parse(this);
+	}
+	public NoteChunk(List<Chunk> body) {
 		this.body = body;
 	}
 
-	public String getContent(Parser p) {
+	public String getContent() {
 		String content =  "" + '\n';
 		for (Chunk c : body) {
-			content += c.getContent(p);
+			content += c.asString();
 		}
-		String fullTitle = "";
-		for (Chunk c : title) {
-			fullTitle += c.getContent(p);
-		}
-		return p.parseNote(content, fullTitle);
+		return content;
 	}
 
 }

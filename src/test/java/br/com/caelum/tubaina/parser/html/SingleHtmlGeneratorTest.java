@@ -20,6 +20,8 @@ import br.com.caelum.tubaina.Book;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.builder.BookBuilder;
+import br.com.caelum.tubaina.format.html.HtmlParser;
+import br.com.caelum.tubaina.format.html.SingleHtmlGenerator;
 import br.com.caelum.tubaina.parser.RegexConfigurator;
 import br.com.caelum.tubaina.parser.Tag;
 import br.com.caelum.tubaina.resources.ResourceLocator;

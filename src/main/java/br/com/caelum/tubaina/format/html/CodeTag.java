@@ -1,20 +1,21 @@
-package br.com.caelum.tubaina.parser.html;
+package br.com.caelum.tubaina.format.html;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.caelum.tubaina.chunk.CodeChunk;
 import br.com.caelum.tubaina.parser.Tag;
-
-public class CodeTag implements Tag {
+//XXX: all this should be at the grammar
+public class CodeTag implements Tag<CodeChunk> {
 
 	public static final String START_HEADER = "<pre";
 	public static final String CLOSE_HEADER = ">\n";
 	public static final String END = "\n</pre>";
 
-	public String parse(String content, String options) {
-		String preOptions = classAssembler(options);
-
-		return START_HEADER + preOptions + CLOSE_HEADER + content + END;
+	public String parse(CodeChunk chunk) {
+		String preOptions = classAssembler(chunk.getOptions());
+		
+		return START_HEADER + preOptions + CLOSE_HEADER + chunk.getContent() + END;
 	}
 	
 	private String classAssembler(String options) {

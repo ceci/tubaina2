@@ -4,19 +4,26 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.inject.Inject;
+
 import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.CompositeChunk;
-import br.com.caelum.tubaina.parser.Parser;
+import br.com.caelum.tubaina.parser.Tag;
 
 public class TableChunk implements CompositeChunk {
 
 	private final List<Chunk> rows;
-	private boolean noborder;
+	private boolean noBorder;
 	private String title;
+	@Inject
+	private Tag<TableChunk> tag;
 
+	public String asString() {
+		return tag.parse(this);
+	}
 	public TableChunk(final String options, final List<Chunk> rows) {
 		this.rows = rows;
-		this.noborder = false;
+		this.noBorder = false;
 		this.title = "";
 		parseOptions(options);
 	}
@@ -25,7 +32,7 @@ public class TableChunk implements CompositeChunk {
 		Pattern noborderPattern = Pattern.compile("(\".+\")*noborder(\".+\")*");
 		Matcher noborderMatcher = noborderPattern.matcher(options);
 		if (noborderMatcher.find())
-			this.noborder = true;
+			this.noBorder = true;
 		
 		Pattern titlePattern = Pattern.compile("\"(.+)\"");
 		Matcher titleMatcher = titlePattern.matcher(options);
@@ -34,12 +41,12 @@ public class TableChunk implements CompositeChunk {
 		}
 	}
 
-	public String getContent(Parser p) {
+	public String getContent() {
 		String content = "";
 		for (Chunk c : rows) {
-			content += c.getContent(p);
+			content += c.asString();
 		}
-		return p.parseTable(content, title, noborder, this.getMaxNumberOfColumns());
+		return content;
 	}
 
 	public int getMaxNumberOfColumns() {
@@ -53,6 +60,14 @@ public class TableChunk implements CompositeChunk {
 			}
 		}
 		return maxColumns;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public boolean hasNoBorder() {
+		return noBorder;
 	}
 
 }

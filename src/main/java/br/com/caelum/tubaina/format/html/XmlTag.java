@@ -1,14 +1,15 @@
-package br.com.caelum.tubaina.parser.html;
+package br.com.caelum.tubaina.format.html;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.caelum.tubaina.chunk.XmlChunk;
 import br.com.caelum.tubaina.parser.CodeHighlightTag;
 import br.com.caelum.tubaina.parser.Indentator;
 import br.com.caelum.tubaina.parser.Tag;
 
-public class XmlTag implements Tag {
+public class XmlTag implements Tag<XmlChunk> {
 
 	public static final String BEGIN = "<div class=\"xml\"><code class=\"xml\">";
 	public static final String END = "</code></div>";
@@ -19,9 +20,10 @@ public class XmlTag implements Tag {
 		this.indentator = indentator;
 		
 	}
-	public String parse(String string, String options) {
-		List<Integer> highlights = new CodeHighlightTag().getHighlights(options);
-		
+	public String parse(XmlChunk chunk) {
+		List<Integer> highlights = new CodeHighlightTag().getHighlights(chunk.getOptions());
+		//XXX: null
+		String string = chunk.getContent();
 		string = indentator.indent(string);
 		
 		string = parseSpaces(string);

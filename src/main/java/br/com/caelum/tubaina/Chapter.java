@@ -38,7 +38,7 @@ public class Chapter {
 	}
 	
 	public String getIntroduction(Parser p){
-		return this.introduction.getContent(p);
+		return this.introduction.getName();
 	}
 	
 	public static int getChaptersCount() {

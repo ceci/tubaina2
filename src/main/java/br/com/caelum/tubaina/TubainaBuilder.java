@@ -16,11 +16,11 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.log4j.Logger;
 
 import br.com.caelum.tubaina.builder.BookBuilder;
+import br.com.caelum.tubaina.format.html.FlatHtmlGenerator;
+import br.com.caelum.tubaina.format.html.Generator;
+import br.com.caelum.tubaina.format.html.SingleHtmlGenerator;
 import br.com.caelum.tubaina.parser.Parser;
 import br.com.caelum.tubaina.parser.RegexConfigurator;
-import br.com.caelum.tubaina.parser.html.FlatHtmlGenerator;
-import br.com.caelum.tubaina.parser.html.Generator;
-import br.com.caelum.tubaina.parser.html.SingleHtmlGenerator;
 import br.com.caelum.tubaina.parser.latex.LatexGenerator;
 import br.com.caelum.tubaina.resources.ResourceLocator;
 

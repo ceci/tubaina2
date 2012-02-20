@@ -208,9 +208,9 @@ public class LatexParserTest {
 				"* Effective Java, Joshua Bloch\n\n* Design Patterns, Erich Gamma et al";
 		List<Chunk> chunks = new ChunkSplitter(null, "list").splitChunks(input);
 		Assert.assertEquals(3, chunks.size());
-		Assert.assertEquals("\n\\item{Refactoring, Martin Fowler}\n", chunks.get(0).getContent(parser));
-		Assert.assertEquals("\n\\item{Effective Java, Joshua Bloch}\n", chunks.get(1).getContent(parser));
-		Assert.assertEquals("\n\\item{Design Patterns, Erich Gamma et al}\n", chunks.get(2).getContent(parser));
+		Assert.assertEquals("\n\\item{Refactoring, Martin Fowler}\n", chunks.get(0).getName());
+		Assert.assertEquals("\n\\item{Effective Java, Joshua Bloch}\n", chunks.get(1).getName());
+		Assert.assertEquals("\n\\item{Design Patterns, Erich Gamma et al}\n", chunks.get(2).getName());
 	}
 	
 	@Test
@@ -218,7 +218,7 @@ public class LatexParserTest {
 		String input = "http://localhost/{id}";
 		List<Chunk> chunks = new ChunkSplitter(null, "all").splitChunks(input);
 		Assert.assertEquals(1, chunks.size());
-		Assert.assertEquals("\n\n\\link{http://localhost/{id}}", chunks.get(0).getContent(parser));
+		Assert.assertEquals("\n\n\\link{http://localhost/{id}}", chunks.get(0).getName());
 	}
 	
 	@Test
@@ -226,6 +226,6 @@ public class LatexParserTest {
 		String input = "http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}.jpg";
 		List<Chunk> chunks = new ChunkSplitter(null, "all").splitChunks(input);
 		Assert.assertEquals(1, chunks.size());
-		Assert.assertEquals("\n\n\\link{http://farm{farm-id}.static.flickr.com/{server-id}/{id}\\_{secret}.jpg}", chunks.get(0).getContent(parser));
+		Assert.assertEquals("\n\n\\link{http://farm{farm-id}.static.flickr.com/{server-id}/{id}\\_{secret}.jpg}", chunks.get(0).getName());
 	}
 }
