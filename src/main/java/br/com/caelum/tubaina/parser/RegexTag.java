@@ -2,7 +2,7 @@ package br.com.caelum.tubaina.parser;
 
 import java.util.regex.Pattern;
 
-public class RegexTag implements Tag {
+public class RegexTag {
 	private String replacement;
 
 	private Pattern regex;
@@ -12,7 +12,7 @@ public class RegexTag implements Tag {
 		this.replacement = replacement;
 	}
 
-	public String parse(String string, String empty) {
+	public String parse(String string) {
 		return regex.matcher(string).replaceAll(replacement);
 	}
 
