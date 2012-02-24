@@ -71,23 +71,12 @@ class TubainaParser(bookName:String) extends RegexParsers {
   	case "[code]" ~ content => new CodeChunk(content, "") 
     case opts ~ content => new CodeChunk(content, opts) 
   }
-  def java:Parser[JavaChunk] = p("[java " ~> nonBracket <~"]" | "[java]") ~ verbose(nonBracket) <~ "[/java]" ^^ {
-    case "[java]" ~ content => new JavaChunk("", content)
-    case opts ~ content => new JavaChunk(opts, content)
-  }
-  def ruby:Parser[RubyChunk] = p("[ruby " ~> nonBracket <~"]" | "[ruby]") ~ verbose(nonBracket) <~ "[/ruby]" ^^ {
-    case "[ruby]" ~ content => new RubyChunk(content, "")
-    case opts ~ content => new RubyChunk(content, opts)
-  }
-  def xml:Parser[XmlChunk] = p("[xml " ~> nonBracket <~"]" | "[xml]") ~ verbose(nonBracket) <~ "[/xml]" ^^ {
-    case "[xml]" ~ content => new XmlChunk("", content)
-    case opts ~ content => new XmlChunk(opts, content)
-  }
+
   def box:Parser[BoxChunk] = p("[box " ~> nonBracket <~ "]") ~ content <~ "[/box]" ^^ {
     case title ~ chunks => new BoxChunk(title, chunks)
   }
   
-  def note:Parser[NoteChunk] = "[note]" ~> content <~ "[/note]" ^^ (x => new NoteChunk(Seq(), x))
+  def note:Parser[NoteChunk] = "[note]" ~> content <~ "[/note]" ^^ (x => new NoteChunk(x))
 
   def image:Parser[ImageChunk] = "[img " ~> "([^ \t\\]])+".r ~ (nonBracket?) <~ "]" ^^ {
     case path ~ opts => 
@@ -107,8 +96,8 @@ class TubainaParser(bookName:String) extends RegexParsers {
   }
   
   def list:Parser[ListChunk] = p("[list " ~> nonBracket <~"]" | "[list]") ~ (item+) <~ "[/list]" ^^ {
-    case "[list]" ~ x => new ListChunk("", x) 
-    case opts ~ x => new ListChunk(opts, x) 
+    case "[list]" ~ x => new ListChunk(x, ListType.BULLET) 
+    case opts ~ x => new ListChunk(x, ListType.valueOf(opts.toUpperCase())) 
   }
   
   def col:Parser[TableColumnChunk] = "[col]" ~> content <~ "[/col]" ^^ (x => new TableColumnChunk(x))
@@ -126,7 +115,7 @@ class TubainaParser(bookName:String) extends RegexParsers {
   
   def index:Parser[IndexChunk] = "(?i)\\[index ".r ~> nonBracket <~ "]" ^^ (x => new IndexChunk(x))
   
-  def elem:Parser[Chunk] = center | table | list | image | code | java | ruby | xml | box | note | exercises | todo | index | paragraph 
+  def elem:Parser[Chunk] = center.asInstanceOf[Parser[Chunk]] | table | list | image | code | box | note | exercises | todo | index | paragraph 
   
   def content:Parser[Seq[Chunk]] = elem+
 
