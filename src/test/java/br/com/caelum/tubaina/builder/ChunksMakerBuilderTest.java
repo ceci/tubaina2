@@ -17,17 +17,14 @@ import br.com.caelum.tubaina.chunk.ExerciseChunk;
 import br.com.caelum.tubaina.chunk.ImageChunk;
 import br.com.caelum.tubaina.chunk.IndexChunk;
 import br.com.caelum.tubaina.chunk.ItemChunk;
-import br.com.caelum.tubaina.chunk.JavaChunk;
 import br.com.caelum.tubaina.chunk.ListChunk;
 import br.com.caelum.tubaina.chunk.NoteChunk;
 import br.com.caelum.tubaina.chunk.ParagraphChunk;
 import br.com.caelum.tubaina.chunk.QuestionChunk;
-import br.com.caelum.tubaina.chunk.RubyChunk;
 import br.com.caelum.tubaina.chunk.TableChunk;
 import br.com.caelum.tubaina.chunk.TableColumnChunk;
 import br.com.caelum.tubaina.chunk.TableRowChunk;
 import br.com.caelum.tubaina.chunk.TodoChunk;
-import br.com.caelum.tubaina.chunk.XmlChunk;
 import br.com.caelum.tubaina.resources.Resource;
 import br.com.caelum.tubaina.resources.ResourceLocator;
 
@@ -79,13 +76,10 @@ public class ChunksMakerBuilderTest {
 		Assert.assertEquals(BoxChunk.class, chunks.get(0).getClass());
 		Assert.assertEquals(CodeChunk.class, chunks.get(1).getClass());
 		Assert.assertEquals(ImageChunk.class, chunks.get(2).getClass());
-		Assert.assertEquals(JavaChunk.class, chunks.get(3).getClass());
 		Assert.assertEquals(ListChunk.class, chunks.get(4).getClass());
 		Assert.assertEquals(NoteChunk.class, chunks.get(5).getClass());
-		Assert.assertEquals(XmlChunk.class, chunks.get(6).getClass());
 		Assert.assertEquals(IndexChunk.class, chunks.get(7).getClass());
 		Assert.assertEquals(TodoChunk.class, chunks.get(8).getClass());
-		Assert.assertEquals(RubyChunk.class, chunks.get(9).getClass());
 		Assert.assertEquals(TableChunk.class, chunks.get(10).getClass());
 		Assert.assertEquals(CenteredParagraphChunk.class, chunks.get(11)
 				.getClass());
@@ -103,13 +97,10 @@ public class ChunksMakerBuilderTest {
 		Assert.assertEquals(12, chunks.size());
 		Assert.assertEquals(CodeChunk.class, chunks.get(0).getClass());
 		Assert.assertEquals(ImageChunk.class, chunks.get(1).getClass());
-		Assert.assertEquals(JavaChunk.class, chunks.get(2).getClass());
 		Assert.assertEquals(ListChunk.class, chunks.get(3).getClass());
 		Assert.assertEquals(NoteChunk.class, chunks.get(4).getClass());
-		Assert.assertEquals(XmlChunk.class, chunks.get(5).getClass());
 		Assert.assertEquals(IndexChunk.class, chunks.get(6).getClass());
 		Assert.assertEquals(TodoChunk.class, chunks.get(7).getClass());
-		Assert.assertEquals(RubyChunk.class, chunks.get(8).getClass());
 		Assert.assertEquals(TableChunk.class, chunks.get(9).getClass());
 		Assert.assertEquals(CenteredParagraphChunk.class, chunks.get(10)
 				.getClass());
@@ -139,13 +130,10 @@ public class ChunksMakerBuilderTest {
 		Assert.assertEquals(CodeChunk.class, chunks.get(1).getClass());
 		Assert.assertEquals(ExerciseChunk.class, chunks.get(2).getClass());
 		Assert.assertEquals(ImageChunk.class, chunks.get(3).getClass());
-		Assert.assertEquals(JavaChunk.class, chunks.get(4).getClass());
 		Assert.assertEquals(ListChunk.class, chunks.get(5).getClass());
 		Assert.assertEquals(NoteChunk.class, chunks.get(6).getClass());
-		Assert.assertEquals(XmlChunk.class, chunks.get(7).getClass());
 		Assert.assertEquals(IndexChunk.class, chunks.get(8).getClass());
 		Assert.assertEquals(TodoChunk.class, chunks.get(9).getClass());
-		Assert.assertEquals(RubyChunk.class, chunks.get(10).getClass());
 		Assert.assertEquals(CenteredParagraphChunk.class, chunks.get(11)
 				.getClass());
 		Assert.assertEquals(ParagraphChunk.class, chunks.get(12).getClass());
@@ -170,12 +158,9 @@ public class ChunksMakerBuilderTest {
 		Assert.assertEquals(11, chunks.size());
 		Assert.assertEquals(CodeChunk.class, chunks.get(0).getClass());
 		Assert.assertEquals(ImageChunk.class, chunks.get(1).getClass());
-		Assert.assertEquals(JavaChunk.class, chunks.get(2).getClass());
 		Assert.assertEquals(ListChunk.class, chunks.get(3).getClass());
-		Assert.assertEquals(XmlChunk.class, chunks.get(4).getClass());
 		Assert.assertEquals(IndexChunk.class, chunks.get(5).getClass());
 		Assert.assertEquals(TodoChunk.class, chunks.get(6).getClass());
-		Assert.assertEquals(RubyChunk.class, chunks.get(7).getClass());
 		Assert.assertEquals(TableChunk.class, chunks.get(8).getClass());
 		Assert.assertEquals(CenteredParagraphChunk.class, chunks.get(9)
 				.getClass());
@@ -195,13 +180,10 @@ public class ChunksMakerBuilderTest {
 		Assert.assertEquals(BoxChunk.class, chunks.get(1).getClass());
 		Assert.assertEquals(CodeChunk.class, chunks.get(2).getClass());
 		Assert.assertEquals(ImageChunk.class, chunks.get(3).getClass());
-		Assert.assertEquals(JavaChunk.class, chunks.get(4).getClass());
 		Assert.assertEquals(ListChunk.class, chunks.get(5).getClass());
 		Assert.assertEquals(NoteChunk.class, chunks.get(6).getClass());
-		Assert.assertEquals(XmlChunk.class, chunks.get(7).getClass());
 		Assert.assertEquals(IndexChunk.class, chunks.get(8).getClass());
 		Assert.assertEquals(TodoChunk.class, chunks.get(9).getClass());
-		Assert.assertEquals(RubyChunk.class, chunks.get(10).getClass());
 		Assert.assertEquals(TableChunk.class, chunks.get(11).getClass());
 		Assert.assertEquals(CenteredParagraphChunk.class, chunks.get(12)
 				.getClass());
@@ -240,12 +222,9 @@ public class ChunksMakerBuilderTest {
 		Assert.assertEquals(CodeChunk.class, chunks.get(1).getClass());
 		Assert.assertEquals(ExerciseChunk.class, chunks.get(2).getClass());
 		Assert.assertEquals(ImageChunk.class, chunks.get(3).getClass());
-		Assert.assertEquals(JavaChunk.class, chunks.get(4).getClass());
 		Assert.assertEquals(ListChunk.class, chunks.get(5).getClass());
 		Assert.assertEquals(NoteChunk.class, chunks.get(6).getClass());
-		Assert.assertEquals(XmlChunk.class, chunks.get(7).getClass());
 		Assert.assertEquals(TodoChunk.class, chunks.get(8).getClass());
-		Assert.assertEquals(RubyChunk.class, chunks.get(9).getClass());
 		Assert.assertEquals(ParagraphChunk.class, chunks.get(10).getClass());
 	}
 
@@ -262,13 +241,10 @@ public class ChunksMakerBuilderTest {
 		Assert.assertEquals(CodeChunk.class, chunks.get(1).getClass());
 		Assert.assertEquals(ExerciseChunk.class, chunks.get(2).getClass());
 		Assert.assertEquals(ImageChunk.class, chunks.get(3).getClass());
-		Assert.assertEquals(JavaChunk.class, chunks.get(4).getClass());
 		Assert.assertEquals(ListChunk.class, chunks.get(5).getClass());
 		Assert.assertEquals(NoteChunk.class, chunks.get(6).getClass());
-		Assert.assertEquals(XmlChunk.class, chunks.get(7).getClass());
 		Assert.assertEquals(IndexChunk.class, chunks.get(8).getClass());
 		Assert.assertEquals(TodoChunk.class, chunks.get(9).getClass());
-		Assert.assertEquals(RubyChunk.class, chunks.get(10).getClass());
 		Assert.assertEquals(TableChunk.class, chunks.get(11).getClass());
 		Assert.assertEquals(CenteredParagraphChunk.class, chunks.get(12)
 				.getClass());

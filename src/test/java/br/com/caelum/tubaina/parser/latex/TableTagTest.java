@@ -1,17 +1,23 @@
 package br.com.caelum.tubaina.parser.latex;
 
+import java.util.Arrays;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import br.com.caelum.tubaina.TubainaException;
+import br.com.caelum.tubaina.Chunk;
+import br.com.caelum.tubaina.chunk.ParagraphChunk;
+import br.com.caelum.tubaina.chunk.TableChunk;
+import br.com.caelum.tubaina.chunk.TableColumnChunk;
+import br.com.caelum.tubaina.chunk.TableRowChunk;
 
 public class TableTagTest {
 
 	@Test
 	public void testTable() {
-		TableTag tag = new TableTag(false, 2);
-		String result = tag.parse("texto da tabela", "");
+		TableTag tag = new TableTag();
+		String result = tag.parse(createTableChunk("texto da tabela", ""));
 		Assert.assertEquals(
 				"\\begin{table}[!h]\n" +
 				"\\caption{}\n" +
@@ -26,8 +32,8 @@ public class TableTagTest {
 
 	@Test
 	public void testTableWithTitle() {
-		TableTag tag = new TableTag(false, 2);
-		String result = tag.parse("texto da tabela", "titulo");
+		TableTag tag = new TableTag();
+		String result = tag.parse(createTableChunk("texto da tabela", "\"titulo\""));
 		Assert.assertEquals(
 				"\\begin{table}[!h]\n" +
 				"\\caption{titulo}\n" +
@@ -42,8 +48,8 @@ public class TableTagTest {
 
 	@Test
 	public void testTableWithoutBorder() {
-		TableTag tag = new TableTag(true, 2);
-		String result = tag.parse("texto da tabela", "");
+		TableTag tag = new TableTag();
+		String result = tag.parse(createTableChunk("texto da tabela", ""));
 		Assert.assertEquals(
 				"\\begin{table}[!h]\n" +
 				"\\caption{}\n" +
@@ -55,8 +61,8 @@ public class TableTagTest {
 
 	@Test
 	public void testTableWithTitleAndWithoutBorder() {
-		TableTag tag = new TableTag(true, 2);
-		String result = tag.parse("texto da tabela", "titulo");
+		TableTag tag = new TableTag();
+		String result = tag.parse(createTableChunk("texto da tabela", "\"titulo\" noborder"));
 		Assert.assertEquals(
 				"\\begin{table}[!h]\n" +
 				"\\caption{titulo}\n" +
@@ -65,15 +71,11 @@ public class TableTagTest {
 				"texto da tabela\n" +
 				"\\end{tabularx}\n\\end{center}\n\\end{table}", result);
 	}
-
-	@Test
-	public void testTableWithInvalidNumberOfColums() {
-		TableTag tag = new TableTag(true, 0);
-		try {
-			tag.parse("texto", "");
-			Assert.fail("Should raise an exception");
-		} catch (TubainaException e) {
-			// ok
-		}
+	
+	private TableChunk createTableChunk(String text, String options) {
+		TableColumnChunk column = new TableColumnChunk(Arrays.<Chunk>asList(new ParagraphChunk(text)));
+		TableRowChunk row = new TableRowChunk(Arrays.<Chunk>asList(column));
+		TableChunk tableChunk = new TableChunk(options, Arrays.<Chunk>asList(row));
+		return tableChunk;
 	}
 }

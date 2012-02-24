@@ -66,7 +66,7 @@ public class LatexResourceManipulator implements ResourceManipulator {
 	public void copyAnswer(AnswerChunk chunk) {
 		String answer = "\\begin{itemize}\n" + 
 				"\\item[\\ref{ans:" + chunk.getId() + "}.]{" + 
-				chunk.getRealContent(parser) + "}\n" +
+				chunk.getContent() + "}\n" +
 				"\\end{itemize}\n";
 
 		try {

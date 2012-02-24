@@ -4,9 +4,6 @@ import java.util.List;
 
 import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.CompositeChunk;
-import br.com.caelum.tubaina.parser.Tag;
-
-import com.google.inject.Inject;
 
 public class ExerciseChunk extends CompositeChunk<ExerciseChunk> {
 

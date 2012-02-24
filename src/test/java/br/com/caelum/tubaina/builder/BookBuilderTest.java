@@ -17,10 +17,8 @@ import br.com.caelum.tubaina.chunk.BoxChunk;
 import br.com.caelum.tubaina.chunk.CenteredParagraphChunk;
 import br.com.caelum.tubaina.chunk.CodeChunk;
 import br.com.caelum.tubaina.chunk.ImageChunk;
-import br.com.caelum.tubaina.chunk.JavaChunk;
 import br.com.caelum.tubaina.chunk.ListChunk;
 import br.com.caelum.tubaina.chunk.ParagraphChunk;
-import br.com.caelum.tubaina.chunk.RubyChunk;
 import br.com.caelum.tubaina.chunk.TableChunk;
 import br.com.caelum.tubaina.parser.MockedParser;
 import br.com.caelum.tubaina.parser.Parser;
@@ -58,12 +56,12 @@ public class BookBuilderTest {
 		Assert.assertEquals(2, sections1.size());
 
 		Assert.assertEquals("Primeira seção", sections1.get(0).getTitle());
-		Assert.assertEquals("texto da prim seção", sections1.get(0).getChunks().get(0).getName());
+		Assert.assertEquals("texto da prim seção", sections1.get(0).getChunks().get(0).asString());
 
 		Assert.assertEquals("Segunda seção", sections1.get(1).getTitle());
-		Assert.assertEquals("texto da segunda seção", sections1.get(1).getChunks().get(0).getName());
+		Assert.assertEquals("texto da segunda seção", sections1.get(1).getChunks().get(0).asString());
 
-		Assert.assertEquals("Algum texto de introdução", chapters.get(1).getIntroduction(parser));
+		Assert.assertEquals("Algum texto de introdução", chapters.get(1).getIntroduction());
 
 	}
 
@@ -85,7 +83,7 @@ public class BookBuilderTest {
 		Assert.assertEquals(1, chapters.size());
 		Assert.assertEquals("O que é java?", chapters.get(0).getTitle());
 		Assert.assertEquals(0, sections.size());
-		Assert.assertEquals("texto da introdução", chapters.get(0).getIntroduction(parser));
+		Assert.assertEquals("texto da introdução", chapters.get(0).getIntroduction());
 	}
 
 	@Test
@@ -99,13 +97,13 @@ public class BookBuilderTest {
 		Assert.assertEquals("O que é java?", chapters.get(0).getTitle());
 		Assert.assertEquals(2, sections.size());
 
-		Assert.assertEquals("texto da introdução", chapters.get(0).getIntroduction(parser));
+		Assert.assertEquals("texto da introdução", chapters.get(0).getIntroduction());
 
 		Assert.assertEquals("Primeira seção", sections.get(0).getTitle());
-		Assert.assertEquals("texto da prim seção", sections.get(0).getChunks().get(0).getName());
+		Assert.assertEquals("texto da prim seção", sections.get(0).getChunks().get(0).asString());
 
 		Assert.assertEquals("Segunda seção", sections.get(1).getTitle());
-		Assert.assertEquals("texto da segunda seção", sections.get(1).getChunks().get(0).getName());
+		Assert.assertEquals("texto da segunda seção", sections.get(1).getChunks().get(0).asString());
 	}
 
 	@Test
@@ -119,10 +117,10 @@ public class BookBuilderTest {
 		Assert.assertEquals(2, sections.size());
 
 		Assert.assertEquals("Primeira seção", sections.get(0).getTitle());
-		Assert.assertEquals("texto da prim seção", sections.get(0).getChunks().get(0).getName());
+		Assert.assertEquals("texto da prim seção", sections.get(0).getChunks().get(0).asString());
 
 		Assert.assertEquals("Segunda seção", sections.get(1).getTitle());
-		Assert.assertEquals("texto da segunda seção", sections.get(1).getChunks().get(0).getName());
+		Assert.assertEquals("texto da segunda seção", sections.get(1).getChunks().get(0).asString());
 	}
 
 	@Test(expected=TubainaException.class)
@@ -150,20 +148,7 @@ public class BookBuilderTest {
 		Assert.assertEquals(1, chunks.size());
 
 		Assert.assertEquals(ParagraphChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("Algum texto de parágrafo", chunks.get(0).getName());
-	}
-
-	@Test
-	public void testJavaChunk() {
-
-		List<Chapter> chapters = getChapters("[chapter  Capítulo cheio de Chunks]\n" + "[section secao]"
-				+ "\n\n[java]\n" + "public class AlgumCodigoJava\n" + "{\n}\n" + "[/java]\n\n");
-
-		List<Chunk> chunks = chapters.get(0).getSections().get(0).getChunks();
-		Assert.assertEquals(1, chunks.size());
-
-		Assert.assertEquals(JavaChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("\npublic class AlgumCodigoJava\n{\n}\n", chunks.get(0).getName());
+		Assert.assertEquals("Algum texto de parágrafo", chunks.get(0).asString());
 	}
 
 	@Test
@@ -175,7 +160,7 @@ public class BookBuilderTest {
 		Assert.assertEquals(1, chunks.size());
 
 		Assert.assertEquals(BoxChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("Algum corpo de texto", chunks.get(0).getName());
+		Assert.assertEquals("Algum corpo de texto", chunks.get(0).asString());
 
 		Field field = BoxChunk.class.getDeclaredField("title");
 		field.setAccessible(true);
@@ -193,19 +178,7 @@ public class BookBuilderTest {
 		Assert.assertEquals(1, chunks.size());
 
 		Assert.assertEquals(CodeChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("\nAlgum corpo de texto\nque é preformatado\n", chunks.get(0).getName());
-	}
-
-	@Test
-	public void testRubyChunk() {
-		List<Chapter> chapters = getChapters("[chapter  Capítulo cheio de Chunks]\n" + "[section secao]"
-				+ "\n\n[ruby]\n" + "Algum corpo de texto\n" + "que é preformatado\n" + "[/ruby]\n\n");
-
-		List<Chunk> chunks = chapters.get(0).getSections().get(0).getChunks();
-		Assert.assertEquals(1, chunks.size());
-
-		Assert.assertEquals(RubyChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("\nAlgum corpo de texto\nque é preformatado\n", chunks.get(0).getName());
+		Assert.assertEquals("\nAlgum corpo de texto\nque é preformatado\n", chunks.get(0).asString());
 	}
 
 	@Test
@@ -217,7 +190,7 @@ public class BookBuilderTest {
 		Assert.assertEquals(1, chunks.size());
 
 		Assert.assertEquals(ImageChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("src/test/resources/baseJpgImage.jpg", chunks.get(0).getName());
+		Assert.assertEquals("src/test/resources/baseJpgImage.jpg", chunks.get(0).asString());
 
 		Field field = ImageChunk.class.getDeclaredField("width");
 		field.setAccessible(true);
@@ -241,7 +214,7 @@ public class BookBuilderTest {
 		Assert.assertEquals(1, chunks.size());
 
 		Assert.assertEquals(ListChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("uma listacom alguns itenspra ter certeza que funciona", chunks.get(0).getName());
+		Assert.assertEquals("uma listacom alguns itenspra ter certeza que funciona", chunks.get(0).asString());
 	}
 	
 	@Test
@@ -254,7 +227,7 @@ public class BookBuilderTest {
 		Assert.assertEquals(1, chunks.size());
 
 		Assert.assertEquals(TableChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("uma tabelacom várias colunase váriaslinhas também", chunks.get(0).getName());
+		Assert.assertEquals("uma tabelacom várias colunase váriaslinhas também", chunks.get(0).asString());
 	}
 	
 	@Test
@@ -266,14 +239,14 @@ public class BookBuilderTest {
 		Assert.assertEquals(1, chunks.size());
 		
 		Assert.assertEquals(CenteredParagraphChunk.class, chunks.get(0).getClass());
-		Assert.assertEquals("Algum texto centralizado\n\nCom várias linhas", chunks.get(0).getName());
+		Assert.assertEquals("Algum texto centralizado\n\nCom várias linhas", chunks.get(0).asString());
 	}
 
 	@Test
 	public void testChunkTypesTogether() throws Exception {
 		List<Chapter> chapters = getChapters("[chapter  Capítulo cheio de Chunks]\n" + "[section secao]"
 				+ "Um chunk de Paragrafo normal\n" + "Com um monte de coisas escritas\n" + "Em várias linhas\n\n"
-				+ "[java] Agora um chunk com código java\n" + "Também multiline\n" + "\n\n" + "[/java]\n"
+				+ "[code java] Agora um chunk com código java\n" + "Também multiline\n" + "\n\n" + "[/code]\n"
 				+ "Mais algum texto que deveria ser chunk de parágrafo\n" + "[box Um chunk de box]\n"
 				+ "Algo escrito dentro dele\n\n" + "Com pseudo-parágrafos [/box]\n\n"
 				+ "[code] Um monte de código genérico \n[/code][list]* uma lista\n\n*"
@@ -297,20 +270,20 @@ public class BookBuilderTest {
 		Assert.assertEquals(ParagraphChunk.class, chunks.get(0).getClass());
 		Assert.assertEquals(
 				"Um chunk de Paragrafo normal\n" + "Com um monte de coisas escritas\n" + "Em várias linhas", chunks
-						.get(0).getName());
+						.get(0).asString());
 
 		// Segundo chunk
-		Assert.assertEquals(JavaChunk.class, chunks.get(1).getClass());
-		Assert.assertEquals("Agora um chunk com código java\n" + "Também multiline", chunks.get(1).getName()
+		Assert.assertEquals(CodeChunk.class, chunks.get(1).getClass());
+		Assert.assertEquals("Agora um chunk com código java\n" + "Também multiline", chunks.get(1).asString()
 				.trim());
 
 		// Terceiro Chunk
 		Assert.assertEquals(ParagraphChunk.class, chunks.get(2).getClass());
-		Assert.assertEquals("Mais algum texto que deveria ser chunk de parágrafo", chunks.get(2).getName());
+		Assert.assertEquals("Mais algum texto que deveria ser chunk de parágrafo", chunks.get(2).asString());
 
 		// Quarto Chunk
 		Assert.assertEquals(BoxChunk.class, chunks.get(3).getClass());
-		Assert.assertEquals("Algo escrito dentro dele" + "Com pseudo-parágrafos", chunks.get(3).getName());
+		Assert.assertEquals("Algo escrito dentro dele" + "Com pseudo-parágrafos", chunks.get(3).asString());
 
 		Field field = BoxChunk.class.getDeclaredField("title");
 		field.setAccessible(true);
@@ -320,19 +293,19 @@ public class BookBuilderTest {
 
 		// Quinto Chunk
 		Assert.assertEquals(CodeChunk.class, chunks.get(4).getClass());
-		Assert.assertEquals(" Um monte de código genérico \n", chunks.get(4).getName());
+		Assert.assertEquals(" Um monte de código genérico \n", chunks.get(4).asString());
 
 		// Sexto Chunk
 		Assert.assertEquals(ListChunk.class, chunks.get(5).getClass());
-		Assert.assertEquals("uma listacom alguns itenspra ter certeza que funciona", chunks.get(5).getName());
+		Assert.assertEquals("uma listacom alguns itenspra ter certeza que funciona", chunks.get(5).asString());
 		
 		// Sétimo Chunk
 		Assert.assertEquals(TableChunk.class, chunks.get(6).getClass());
-		Assert.assertEquals("uma tabelacom várias colunase váriaslinhas também", chunks.get(6).getName());
+		Assert.assertEquals("uma tabelacom várias colunase váriaslinhas também", chunks.get(6).asString());
 		
 		// Oitavo Chunk
 		Assert.assertEquals(CenteredParagraphChunk.class, chunks.get(7).getClass());
-		Assert.assertEquals("Algum texto centralizado\n\nCom várias linhas", chunks.get(7).getName());
+		Assert.assertEquals("Algum texto centralizado\n\nCom várias linhas", chunks.get(7).asString());
 	}
 
 }

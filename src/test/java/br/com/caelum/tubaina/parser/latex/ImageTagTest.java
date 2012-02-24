@@ -2,16 +2,24 @@ package br.com.caelum.tubaina.parser.latex;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import br.com.caelum.tubaina.parser.Tag;
+import br.com.caelum.tubaina.chunk.ImageChunk;
 
 public class ImageTagTest {
 
+	private ImageTag tag;
+
+	@Before
+	public void setUp() {
+		tag = new ImageTag();
+	}
+	
 	@Test
 	public void testFullImageTag() {
-		Tag tag = new ImageTag();
-		String result = tag.parse("imagem.png", "w=30 \"Imagem de alguma coisa\"");
+		ImageChunk imageChunk = new ImageChunk("imagem.png", "w=30 \"Imagem de alguma coisa\"", (int)(52.5/0.3));
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"\\begin{figure}[H]\n\\centering\n" +
 				"\\includegraphics[width=52.5mm]{imagem.png}\n" +
@@ -21,8 +29,8 @@ public class ImageTagTest {
 
 	@Test
 	public void testImageTagWithoutBounds() {
-		Tag tag = new ImageTag();
-		String result = tag.parse("imagem.png", "\"Imagem de alguma coisa\"");
+		ImageChunk imageChunk = new ImageChunk("imagem.png", "\"Imagem de alguma coisa\"", 42000);
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"\\begin{figure}[H]\n\\centering\n" +
 				"\\includegraphics[width=\\textwidth]{imagem.png}\n" +
@@ -32,8 +40,8 @@ public class ImageTagTest {
 
 	@Test
 	public void testImageTagWithoutDesc() {
-		Tag tag = new ImageTag();
-		String result = tag.parse("imagem.png", "w=42");
+		ImageChunk imageChunk = new ImageChunk("imagem.png", "w=42", (int)(73.5/0.42));
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"\\begin{figure}[H]\n\\centering\n" +
 				"\\includegraphics[width=73.5mm]{imagem.png}\n" +
@@ -42,8 +50,8 @@ public class ImageTagTest {
 	
 	@Test
 	public void testImageTagWithPercentageSymbol() {
-		Tag tag = new ImageTag();
-		String result = tag.parse("imagem.png", "w=40%");
+		ImageChunk imageChunk = new ImageChunk("imagem.png", "w=40%", (int)(70.0/0.4));
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"\\begin{figure}[H]\n\\centering\n" +
 				"\\includegraphics[width=70.0mm]{imagem.png}\n" +
@@ -52,8 +60,8 @@ public class ImageTagTest {
 	
 	@Test
 	public void testImageTagWithoutPercentageSymbol() {
-		Tag tag = new ImageTag();
-		String result = tag.parse("imagem.png", "w=40");
+		ImageChunk imageChunk = new ImageChunk("imagem.png", "w=40", (int)(70.0/0.4));
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"\\begin{figure}[H]\n\\centering\n" +
 				"\\includegraphics[width=70.0mm]{imagem.png}\n" +
@@ -61,19 +69,9 @@ public class ImageTagTest {
 	}
 	
 	@Test
-	public void testImageTagWithInvalidBounds() {
-		Tag tag = new ImageTag();
-		String result = tag.parse("imagem.png", "w=42");
-		Assert.assertEquals(
-				"\\begin{figure}[H]\n\\centering\n" +
-				"\\includegraphics[width=73.5mm]{imagem.png}\n" +
-				"\\end{figure}\n\n", result);
-	}
-	
-	@Test
 	public void testImageTagWithPath() {
-		Tag tag = new ImageTag();
-		String result = tag.parse("some/path/imagem.png", "w=42");
+		ImageChunk imageChunk = new ImageChunk("some/path/imagem.png", "w=42", (int)(73.5/0.42));
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"\\begin{figure}[H]\n\\centering\n" +
 				"\\includegraphics[width=73.5mm]{imagem.png}\n" +

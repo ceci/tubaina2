@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.builder.ChunkSplitter;
 import br.com.caelum.tubaina.chunk.ListChunk;
+import br.com.caelum.tubaina.chunk.ListType;
 import br.com.caelum.tubaina.resources.Resource;
 
 public class ListReplacer extends AbstractReplacer {
@@ -19,7 +20,7 @@ public class ListReplacer extends AbstractReplacer {
 	@Override
 	public Chunk createChunk(String options, String content) {
 		ChunkSplitter splitter = new ChunkSplitter(resources, "list");
-		return new ListChunk(options, splitter.splitChunks(content));
+		return new ListChunk(splitter.splitChunks(content), ListType.from(options));
 	}
 
 }

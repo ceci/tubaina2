@@ -6,7 +6,7 @@ import br.com.caelum.tubaina.parser.Tag;
 public class NoteTag implements Tag<NoteChunk> {
 
 	public String parse(NoteChunk chunk) {
-		return "\\begin{tubainabox}{Instructor's note}\n" +
+		return "\\begin{tubainabox}{\\instructornote}\n" +
 				chunk.getContent() + "\n" +
 				"\\end{tubainabox}";
 	}

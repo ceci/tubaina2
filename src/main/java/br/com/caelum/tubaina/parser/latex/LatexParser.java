@@ -2,9 +2,10 @@ package br.com.caelum.tubaina.parser.latex;
 
 import java.util.List;
 
+import br.com.caelum.tubaina.parser.Parser;
 import br.com.caelum.tubaina.parser.RegexTag;
 
-public class LatexParser {
+public class LatexParser implements Parser{
 
     public static final int MAX_LINE_LENGTH = 93;
 

@@ -1,20 +1,20 @@
 package br.com.caelum.tubaina.parser.latex;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
+
+import br.com.caelum.tubaina.Chunk;
+import br.com.caelum.tubaina.chunk.NoteChunk;
+import br.com.caelum.tubaina.chunk.ParagraphChunk;
 
 public class NoteTagTest {
 	
 	@Test
 	public void testNoteTag(){
-		String result = new NoteTag().parse("qualquer texto de nota", "Nota para o Instrutor");
-		Assert.assertEquals("\\begin{tubainabox}{Nota para o Instrutor}\nqualquer texto de nota\n\\end{tubainabox}", result);
+		NoteChunk noteChunk = new NoteChunk(Arrays.<Chunk>asList(new ParagraphChunk("qualquer texto de nota")));
+		String result = new NoteTag().parse(noteChunk);
+		Assert.assertEquals("\\begin{tubainabox}{\\instructornote}\nqualquer texto de nota\n\\end{tubainabox}", result);
 	}
-	
-	@Test
-	public void noteTagShouldAlwaysHaveBoxName(){
-		String result = new NoteTag().parse("note without a title should get a standart title", null);
-		Assert.assertEquals("\\begin{tubainabox}{Instructor's note}\nnote without a title should get a standart title\n\\end{tubainabox}", result);
-	}
-	
 }

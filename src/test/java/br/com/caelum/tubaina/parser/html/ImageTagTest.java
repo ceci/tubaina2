@@ -5,6 +5,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.caelum.tubaina.chunk.ImageChunk;
 import br.com.caelum.tubaina.format.html.ImageTag;
 
 public class ImageTagTest {
@@ -18,42 +19,48 @@ public class ImageTagTest {
 
 	@Test
 	public void testFullImageTag() {
-		String result = tag.parse("imagem.png", "w=30 \"Imagem de alguma coisa\"");
+		ImageChunk imageChunk = new ImageChunk("imagem.png", "w=30 \"Imagem de alguma coisa\"", 0);
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"<img src=\"$$RELATIVE$$/imagem.png\" alt=\"Imagem de alguma coisa\" />", result);
 	}
 
 	@Test
 	public void testImageTagWithoutBounds() {
-		String result = tag.parse("imagem.png", "\"Imagem de alguma coisa\"");
+		ImageChunk imageChunk = new ImageChunk("imagem.png", "\"Imagem de alguma coisa\"", 0);
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"<img src=\"$$RELATIVE$$/imagem.png\" alt=\"Imagem de alguma coisa\" />", result);
 	}
 
 	@Test
 	public void testImageTagWithoutDesc() {
-		String result = tag.parse("imagem.png", "w=42");
+		ImageChunk imageChunk = new ImageChunk("imagem.png", "w=42", 0);
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"<img src=\"$$RELATIVE$$/imagem.png\" alt=\"imagem.png\" />", result);
 	}
 	
 	@Test
 	public void testImageTagWithPath() {
-		String result = tag.parse("some/path/imagem.png", "w=42");
+		ImageChunk imageChunk = new ImageChunk("some/path/imagem.png", "w=42", 0);
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"<img src=\"$$RELATIVE$$/imagem.png\" alt=\"imagem.png\" />", result);
 	}
 	
 	@Test
 	public void testImageTagWithPercentageSymbol() {
-		String result = tag.parse("some/path/imagem.png", "w=50%");
+		ImageChunk imageChunk = new ImageChunk("some/path/imagem.png", "w=50%", 0);
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"<img src=\"$$RELATIVE$$/imagem.png\" alt=\"imagem.png\" />", result);
 	}
 	
 	@Test
 	public void testImageTagWithoutPercentageSymbol() {
-		String result = tag.parse("some/path/imagem.png", "w=50");
+		ImageChunk imageChunk = new ImageChunk("some/path/imagem.png", "w=50", 0);
+		String result = tag.parse(imageChunk);
 		Assert.assertEquals(
 				"<img src=\"$$RELATIVE$$/imagem.png\" alt=\"imagem.png\" />", result);
 	}

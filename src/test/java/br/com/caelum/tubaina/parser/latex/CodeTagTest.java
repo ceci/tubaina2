@@ -3,6 +3,7 @@ package br.com.caelum.tubaina.parser.latex;
 import org.junit.Assert;
 import org.junit.Test;
 
+import br.com.caelum.tubaina.chunk.CodeChunk;
 import br.com.caelum.tubaina.parser.SimpleIndentator;
 
 
@@ -11,12 +12,12 @@ public class CodeTagTest {
 	@Test
 	public void testPropertiesCodeTag() throws Exception {
 		String options = "properties";
-		String string = "blablah blah\n" +
+		String code = "blablah blah\n" +
 				"#algum comentario\n" +
 				"texto=valor\n" +
 				"texto:valor\n" +
 				"texto valor";
-		String output = new CodeTag(new SimpleIndentator()).parse(string, options);
+		String output = new CodeTag(new SimpleIndentator()).parse(new CodeChunk(code, options));
 		Assert.assertEquals(CodeTag.BEGIN + "{properties}\n" +
 				"blablah blah\n" +
 				"#algum comentario\n" +
@@ -33,7 +34,7 @@ public class CodeTagTest {
 				"texto\\:valor:valor\n" +
 				"texto\\ valor valor\n" +
 				"a b\\#fake comentario";
-		String output = new CodeTag(new SimpleIndentator()).parse(string, options);
+		String output = new CodeTag(new SimpleIndentator()).parse(new CodeChunk(string, options));
 		Assert.assertEquals(CodeTag.BEGIN + "{properties}\n" +
 				"blablah blah\n" +
 				"#algum comentario\n" +
@@ -46,21 +47,21 @@ public class CodeTagTest {
 	
 	@Test
 	public void languageCodeTagIsReturnedInsideMintedEnvironment() throws Exception {
-		String string = "public static void main(String[] args) {";
+		String code = "public static void main(String[] args) {";
 		String options = "java";
-		String output = new CodeTag(new SimpleIndentator()).parse(string , options );
+		String output = new CodeTag(new SimpleIndentator()).parse(new CodeChunk(code , options));
 		Assert.assertEquals(CodeTag.BEGIN + "{java}\n" +
-							string + 
+							code + 
 							CodeTag.END, output);
 	}
 	
 	@Test
 	public void languageCodeTagShouldInsertLineNumbersWhenOptionContainsSharp(){
-		String string = "public static void main(String[] args) {";
+		String code = "public static void main(String[] args) {";
 		String options = "java #";
-		String output = new CodeTag(new SimpleIndentator()).parse(string , options );
+		String output = new CodeTag(new SimpleIndentator()).parse(new CodeChunk(code , options));
 		Assert.assertEquals(CodeTag.BEGIN + "[linenos, numbersep=5pt]{java}\n" +
-							string + 
+							code + 
 							CodeTag.END, output);
 	}
 	

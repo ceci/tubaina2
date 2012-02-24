@@ -2,7 +2,7 @@ package br.com.caelum.tubaina;
 
 import java.util.List;
 
-import br.com.caelum.tubaina.parser.Parser;
+import br.com.caelum.tubaina.chunk.IntroductionChunk;
 import br.com.caelum.tubaina.resources.Resource;
 
 public class Chapter {
@@ -15,9 +15,9 @@ public class Chapter {
 
 	private List<Resource> resources;
 
-	private Chunk introduction;
+	private IntroductionChunk introduction;
 
-	public Chapter(String title, Chunk introduction, List<Section> sections, List<Resource> resources) {
+	public Chapter(String title, IntroductionChunk introduction, List<Section> sections, List<Resource> resources) {
 		this.title = title;
 		this.sections = sections;
 		this.resources = resources;
@@ -37,8 +37,8 @@ public class Chapter {
 		return resources;
 	}
 	
-	public String getIntroduction(Parser p){
-		return this.introduction.getName();
+	public String getIntroduction(){
+		return this.introduction.getContent();
 	}
 	
 	public static int getChaptersCount() {

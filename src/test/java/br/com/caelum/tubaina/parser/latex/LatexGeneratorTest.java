@@ -1,7 +1,5 @@
 package br.com.caelum.tubaina.parser.latex;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -19,7 +17,7 @@ import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.builder.BookBuilder;
 import br.com.caelum.tubaina.parser.RegexConfigurator;
-import br.com.caelum.tubaina.parser.Tag;
+import br.com.caelum.tubaina.parser.RegexTag;
 import br.com.caelum.tubaina.resources.ResourceLocator;
 import br.com.caelum.tubaina.util.FileUtilities;
 
@@ -32,7 +30,7 @@ public class LatexGeneratorTest {
 	@Before
 	public void setUp() throws IOException {
 		RegexConfigurator configurator = new RegexConfigurator();
-		List<Tag> tags = configurator.read("/regex.properties", "/html.properties");
+		List<RegexTag> tags = configurator.read("/regex.properties", "/html.properties");
 		parser = new LatexParser(tags);
 
 		File path = new File("src/test/resources");
@@ -133,7 +131,7 @@ public class LatexGeneratorTest {
 	@Test
 	public void testGeneratorForInstructorTextbook() throws IOException {
 		RegexConfigurator configurator = new RegexConfigurator();
-		List<Tag> tags = configurator.read("/regex.properties",
+		List<RegexTag> tags = configurator.read("/regex.properties",
 				"/html.properties");
 		LatexParser parser = new LatexParser(tags, true, false);
 
@@ -147,6 +145,7 @@ public class LatexGeneratorTest {
 		customGenerator.generate(b, temp);
 		File texFile = new File(temp, "teste.tex");
 		Assert.assertTrue("Book file should exist", texFile.exists());
+		
 		Assert.assertTrue("Should have INSTRUCTOR TEXTBOOK on the first page", containsText(texFile, "INSTRUCTOR TEXTBOOK"));
 		Assert.assertTrue("Should display the note", containsText(texFile, "uma nota para o instrutor"));
 	}
