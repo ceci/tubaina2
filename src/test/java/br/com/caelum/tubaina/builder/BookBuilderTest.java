@@ -4,33 +4,87 @@ import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import net.vidageek.mirror.dsl.Mirror;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.TypeLiteral;
+
 import br.com.caelum.tubaina.Book;
 import br.com.caelum.tubaina.Chapter;
 import br.com.caelum.tubaina.Chunk;
+import br.com.caelum.tubaina.CompositeChunk;
 import br.com.caelum.tubaina.Section;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.chunk.BoxChunk;
 import br.com.caelum.tubaina.chunk.CenteredParagraphChunk;
 import br.com.caelum.tubaina.chunk.CodeChunk;
 import br.com.caelum.tubaina.chunk.ImageChunk;
+import br.com.caelum.tubaina.chunk.IntroductionChunk;
 import br.com.caelum.tubaina.chunk.ListChunk;
 import br.com.caelum.tubaina.chunk.ParagraphChunk;
 import br.com.caelum.tubaina.chunk.TableChunk;
+import br.com.caelum.tubaina.format.html.HtmlModule;
 import br.com.caelum.tubaina.parser.MockedParser;
 import br.com.caelum.tubaina.parser.Parser;
+import br.com.caelum.tubaina.parser.Tag;
 import br.com.caelum.tubaina.resources.ResourceLocator;
 
 public class BookBuilderTest {
 
-	private Parser parser;
+
+	private MockModule module;
+
+	private final class MockModule extends AbstractModule {
+		@Override
+		protected void configure() {
+			bind(new TypeLiteral<Tag<ParagraphChunk>>() {}).toInstance(new Tag<ParagraphChunk>() {
+				public String parse(ParagraphChunk chunk) {
+					return chunk.getContent();
+				}
+				
+			});
+			bind(new TypeLiteral<Tag<IntroductionChunk>>() {}).toInstance(new Tag<IntroductionChunk>() {
+				public String parse(IntroductionChunk chunk) {
+					return chunk.getContent();
+				}
+				
+			});
+		}
+
+		public void inject(Book book) {
+			Injector injector = Guice.createInjector(new MockModule());
+			List<Chapter> chapters = book.getChapters();
+			for (Chapter chapter : chapters) {
+				inject(injector, (Chunk) new Mirror().on(chapter).get().field("introduction"));
+				for (Section section : chapter.getSections()) {
+					for (Chunk chunk : section.getChunks()) {
+						inject(injector, chunk);
+					}
+				}
+			}
+		}
+
+		private void inject(Injector injector, Chunk chunk) {
+			injector.injectMembers(chunk);
+			if (chunk instanceof CompositeChunk<?>) {
+				CompositeChunk<?> composite = (CompositeChunk<?>) chunk;
+				for (Chunk other : composite.getBody()) {
+					inject(injector, other);
+				}
+			}
+		}
+	}
 
 	@Before
 	public void setUp() {
-		parser = new MockedParser();
+		module = new MockModule();
 		ResourceLocator.initialize(".");
 	}
 
@@ -45,6 +99,7 @@ public class BookBuilderTest {
 
 		builder.add(new StringReader("[chapter Introdução]\n" + "Algum texto de introdução\n"));
 		Book book = builder.build();
+		module.inject(book);
 		Assert.assertEquals("livro", book.getName());
 
 		List<Chapter> chapters = book.getChapters();
@@ -135,6 +190,7 @@ public class BookBuilderTest {
 		BookBuilder builder = new BookBuilder("livro");
 		builder.add(new StringReader(string));
 		Book b = builder.build();
+		module.inject(b);
 		List<Chapter> chapters = b.getChapters();
 		return chapters;
 	}

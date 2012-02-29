@@ -23,8 +23,8 @@ public class ItemReplacerTest {
 
 	@Test
 	public void testJavaCodeInsideItem() {
-		String test = "* quero que o codigo java abaixo não tenha itens \n" + "[java]blah blah[/java]" + "[java] \n"
-				+ "/**\n" + " * texto qualquer\n\n" + " *outro comentario\n" + "[/java]\n"
+		String test = "* quero que o codigo java abaixo não tenha itens \n" + "[code java]blah blah[/code]" + "[code java] \n"
+				+ "/**\n" + " * texto qualquer\n\n" + " *outro comentario\n" + "[/code]\n"
 				+ "  *mas que isso seja outro item";
 		List<Chunk> chunks = new ChunkSplitter(resources, "list").splitChunks(test);
 		Assert.assertEquals(2, chunks.size());
