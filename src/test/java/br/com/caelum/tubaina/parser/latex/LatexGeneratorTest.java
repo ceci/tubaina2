@@ -16,6 +16,8 @@ import br.com.caelum.tubaina.Book;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.builder.BookBuilder;
+import br.com.caelum.tubaina.format.latex.LatexGenerator;
+import br.com.caelum.tubaina.format.latex.LatexParser;
 import br.com.caelum.tubaina.parser.RegexConfigurator;
 import br.com.caelum.tubaina.parser.RegexTag;
 import br.com.caelum.tubaina.resources.ResourceLocator;

@@ -1,4 +1,4 @@
-package br.com.caelum.tubaina.parser.latex;
+package br.com.caelum.tubaina.format.latex;
 
 import br.com.caelum.tubaina.chunk.ItemChunk;
 import br.com.caelum.tubaina.parser.Tag;

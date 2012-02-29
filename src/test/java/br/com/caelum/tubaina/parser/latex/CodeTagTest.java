@@ -4,10 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.chunk.CodeChunk;
+import br.com.caelum.tubaina.format.latex.CodeTag;
 import br.com.caelum.tubaina.parser.SimpleIndentator;
 
 
-public class CodeTagTest {
+public class CodeTagTest extends AbstractTagTest {
 
 	@Test
 	public void testPropertiesCodeTag() throws Exception {
@@ -17,7 +18,7 @@ public class CodeTagTest {
 				"texto=valor\n" +
 				"texto:valor\n" +
 				"texto valor";
-		String output = new CodeTag(new SimpleIndentator()).parse(new CodeChunk(code, options));
+		String output = getContent(new CodeChunk(code, options));
 		Assert.assertEquals(CodeTag.BEGIN + "{properties}\n" +
 				"blablah blah\n" +
 				"#algum comentario\n" +
@@ -34,7 +35,7 @@ public class CodeTagTest {
 				"texto\\:valor:valor\n" +
 				"texto\\ valor valor\n" +
 				"a b\\#fake comentario";
-		String output = new CodeTag(new SimpleIndentator()).parse(new CodeChunk(string, options));
+		String output = getContent(new CodeChunk(string, options));
 		Assert.assertEquals(CodeTag.BEGIN + "{properties}\n" +
 				"blablah blah\n" +
 				"#algum comentario\n" +
@@ -49,7 +50,7 @@ public class CodeTagTest {
 	public void languageCodeTagIsReturnedInsideMintedEnvironment() throws Exception {
 		String code = "public static void main(String[] args) {";
 		String options = "java";
-		String output = new CodeTag(new SimpleIndentator()).parse(new CodeChunk(code , options));
+		String output = getContent(new CodeChunk(code , options));
 		Assert.assertEquals(CodeTag.BEGIN + "{java}\n" +
 							code + 
 							CodeTag.END, output);
@@ -59,7 +60,7 @@ public class CodeTagTest {
 	public void languageCodeTagShouldInsertLineNumbersWhenOptionContainsSharp(){
 		String code = "public static void main(String[] args) {";
 		String options = "java #";
-		String output = new CodeTag(new SimpleIndentator()).parse(new CodeChunk(code , options));
+		String output = getContent(new CodeChunk(code , options));
 		Assert.assertEquals(CodeTag.BEGIN + "[linenos, numbersep=5pt]{java}\n" +
 							code + 
 							CodeTag.END, output);

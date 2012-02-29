@@ -13,8 +13,8 @@ import org.apache.log4j.Logger;
 
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.chunk.AnswerChunk;
+import br.com.caelum.tubaina.format.latex.ImageTag;
 import br.com.caelum.tubaina.parser.Parser;
-import br.com.caelum.tubaina.parser.latex.ImageTag;
 import br.com.caelum.tubaina.util.Utilities;
 
 public class LatexResourceManipulator implements ResourceManipulator {

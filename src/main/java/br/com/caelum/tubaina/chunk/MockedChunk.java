@@ -1,6 +1,8 @@
 package br.com.caelum.tubaina.chunk;
 
-public class MockedChunk extends AbstractChunk<MockedChunk> {
+import br.com.caelum.tubaina.Chunk;
+
+public class MockedChunk implements Chunk {
 
 	private String content;
 
@@ -8,7 +10,7 @@ public class MockedChunk extends AbstractChunk<MockedChunk> {
 		this.content = content;
 	}
 	
-	public String getContent() {
+	public String asString() {
 		return content;
 	}
 

@@ -14,7 +14,6 @@ import br.com.caelum.tubaina.builder.ChunkSplitter;
 import br.com.caelum.tubaina.builder.replacer.Replacer;
 import br.com.caelum.tubaina.chunk.ItemChunk;
 import br.com.caelum.tubaina.chunk.ListChunk;
-import br.com.caelum.tubaina.parser.MockedParser;
 import br.com.caelum.tubaina.resources.Resource;
 
 public class ItemReplacerTest {
@@ -28,6 +27,14 @@ public class ItemReplacerTest {
 		replacer = ReplacerAdapterFactory.replacerFor(ReplacerAdapterFactory.parser().list());
 	}
 
+	@Test
+	public void testItemSplit() {
+		List<Chunk> chunks = new ArrayList<Chunk>();
+		replacer.execute("[list]* blah\n\n*bleh\n \n *  blih  [/list]", chunks);
+		List<Chunk> body = ((ListChunk) chunks.get(0)).getBody();
+		Assert.assertEquals(3, body.size());
+	}
+	
 	@Test
 	public void testJavaCodeInsideItem() throws Exception {
 		String test = "[list]* quero que o codigo java abaixo não tenha itens \n" + "[code java]blah blah[/code]" + "[code java] \n"

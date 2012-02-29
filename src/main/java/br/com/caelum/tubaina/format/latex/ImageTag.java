@@ -1,4 +1,4 @@
-package br.com.caelum.tubaina.parser.latex;
+package br.com.caelum.tubaina.format.latex;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +31,9 @@ public class ImageTag implements Tag<ImageChunk> {
 		String imgsrc = FilenameUtils.getName(chunk.getPath());
 		output = output + "{" + imgsrc + "}\n";
 
-		output = output + "\n\n\\caption{" + chunk.getDescription() + "}\n\n";
+		if (!chunk.getDescription().isEmpty()) {
+			output = output + "\n\n\\caption{" + chunk.getDescription() + "}\n\n";
+		}
 
 		output = output + "\\end{figure}\n\n";
 

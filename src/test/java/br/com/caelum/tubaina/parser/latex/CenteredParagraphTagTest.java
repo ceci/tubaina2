@@ -4,12 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.chunk.CenteredParagraphChunk;
+import br.com.caelum.tubaina.format.latex.CenteredParagraphTag;
 
-public class CenteredParagraphTagTest {
+public class CenteredParagraphTagTest extends AbstractTagTest {
 	@Test
 	public void testCenteredParagraphTag() {
-		CenteredParagraphTag tag = new CenteredParagraphTag();
-		String result = tag.parse(new CenteredParagraphChunk("texto centralizado"));
+		String result = getContent(new CenteredParagraphChunk("texto centralizado"));
 		Assert.assertEquals("\\begin{center}texto centralizado\\end{center}",
 				result);
 	}

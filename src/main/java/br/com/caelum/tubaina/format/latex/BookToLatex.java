@@ -1,4 +1,4 @@
-package br.com.caelum.tubaina.parser.latex;
+package br.com.caelum.tubaina.format.latex;
 
 import java.util.HashMap;
 import java.util.Map;

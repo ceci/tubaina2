@@ -1,4 +1,4 @@
-package br.com.caelum.tubaina.parser.latex;
+package br.com.caelum.tubaina.format.latex;
 
 import br.com.caelum.tubaina.chunk.ListChunk;
 import br.com.caelum.tubaina.chunk.ListType;
@@ -12,14 +12,17 @@ public class ListTag implements Tag<ListChunk> {
 		switch (type) {
 		case NUMBER:
 			listHeader += "1)";
+			break;
 		case LETTER:
 			listHeader += "a)";
+			break;
 		case ROMAN:
 			listHeader += "I)";
+			break;
 		case BULLET:
 			return "\\begin{itemize}" + chunk.getContent() + "\\end{itemize}";
 		}
-		return listHeader + "]\n" + chunk.getContent() + "\n\\end{enumerate}";
+		return listHeader + "]" + chunk.getContent() + "\\end{enumerate}";
 	}
 
 }
