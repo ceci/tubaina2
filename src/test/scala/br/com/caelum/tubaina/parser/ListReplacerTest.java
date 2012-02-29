@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.Chunk;
+import br.com.caelum.tubaina.CompositeChunk;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.builder.replacer.ListReplacer;
 import br.com.caelum.tubaina.builder.replacer.Replacer;
@@ -52,7 +53,7 @@ public class ListReplacerTest {
 		Assert.assertEquals(1, chunks.size());
 		Assert.assertEquals(ListChunk.class, chunks.get(0).getClass());
 
-		Field listBody = ListChunk.class.getDeclaredField("body");
+		Field listBody = CompositeChunk.class.getDeclaredField("body");
 		listBody.setAccessible(true);
 
 		List<Chunk> chunks1 = (List<Chunk>) listBody.get(chunks.get(0));

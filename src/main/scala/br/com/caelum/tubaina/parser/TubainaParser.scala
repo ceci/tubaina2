@@ -32,7 +32,7 @@ class TubainaParser(bookName:String) extends RegexParsers {
   def chapter:Parser[Chapter] =
     p("[chapter " ~> nonBracket <~ "]") ~ (content?) ~ (section*) ^^ {
       case name ~ Some(intro) ~ sections => new Chapter(name.trim(), new IntroductionChunk(intro), sections, Seq())
-      case name ~ None ~ sections => new Chapter(name.trim(), new IntroductionChunk(Seq()), sections, Seq())
+      case name ~ None ~ sections => new Chapter(name.trim(), new IntroductionChunk(Seq(new ParagraphChunk(""))), sections, Seq())
     }
   
   def section:Parser[Section] =

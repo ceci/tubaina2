@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.Chunk;
+import br.com.caelum.tubaina.CompositeChunk;
 import br.com.caelum.tubaina.builder.ChunkSplitter;
 import br.com.caelum.tubaina.builder.replacer.Replacer;
 import br.com.caelum.tubaina.chunk.ItemChunk;
@@ -29,13 +30,13 @@ public class ItemReplacerTest {
 
 	@Test
 	public void testJavaCodeInsideItem() throws Exception {
-		String test = "[list]* quero que o codigo java abaixo não tenha itens \n" + "[java]blah blah[/java]" + "[java] \n"
-				+ "/**\n" + " * texto qualquer\n\n" + " *outro comentario\n" + "[/java]\n"
+		String test = "[list]* quero que o codigo java abaixo não tenha itens \n" + "[code java]blah blah[/code]" + "[code java] \n"
+				+ "/**\n" + " * texto qualquer\n\n" + " *outro comentario\n" + "[/code]\n"
 				+ "  *mas que isso seja outro item[/list]";
 		
 		List<Chunk> chunks = new ArrayList<Chunk>();
 		replacer.execute(test, chunks);
-		Field body = ListChunk.class.getDeclaredField("body");
+		Field body = CompositeChunk.class.getDeclaredField("body");
 		body.setAccessible(true);
 		chunks = (List<Chunk>) body.get(chunks.get(0));
 		
@@ -43,9 +44,9 @@ public class ItemReplacerTest {
 		Assert.assertEquals(2, chunks.size());
 		Assert.assertEquals(ItemChunk.class, chunks.get(0).getClass());
 		Assert.assertEquals("quero que o codigo java abaixo não tenha itens" + "blah blah \n" + "/**\n"
-				+ " * texto qualquer\n\n" + " *outro comentario\n", chunks.get(0).getContent(parser));
+				+ " * texto qualquer\n\n" + " *outro comentario\n", chunks.get(0).asString());
 		Assert.assertEquals(ItemChunk.class, chunks.get(1).getClass());
-		Assert.assertEquals("mas que isso seja outro item", chunks.get(1).getContent(parser));
+		Assert.assertEquals("mas que isso seja outro item", chunks.get(1).asString());
 
 	}
 
