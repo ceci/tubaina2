@@ -10,12 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
-
 import br.com.caelum.tubaina.Book;
 import br.com.caelum.tubaina.Chapter;
 import br.com.caelum.tubaina.Chunk;
@@ -27,14 +21,19 @@ import br.com.caelum.tubaina.chunk.CenteredParagraphChunk;
 import br.com.caelum.tubaina.chunk.CodeChunk;
 import br.com.caelum.tubaina.chunk.ImageChunk;
 import br.com.caelum.tubaina.chunk.IntroductionChunk;
+import br.com.caelum.tubaina.chunk.ItemChunk;
 import br.com.caelum.tubaina.chunk.ListChunk;
 import br.com.caelum.tubaina.chunk.ParagraphChunk;
 import br.com.caelum.tubaina.chunk.TableChunk;
-import br.com.caelum.tubaina.format.html.HtmlModule;
-import br.com.caelum.tubaina.parser.MockedParser;
-import br.com.caelum.tubaina.parser.Parser;
+import br.com.caelum.tubaina.chunk.TableColumnChunk;
+import br.com.caelum.tubaina.chunk.TableRowChunk;
 import br.com.caelum.tubaina.parser.Tag;
 import br.com.caelum.tubaina.resources.ResourceLocator;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.TypeLiteral;
 
 public class BookBuilderTest {
 
@@ -44,18 +43,43 @@ public class BookBuilderTest {
 	private final class MockModule extends AbstractModule {
 		@Override
 		protected void configure() {
+			Tag tag = new Tag<CompositeChunk>() {
+				public String parse(CompositeChunk chunk) {
+					return chunk.getContent();
+				}
+				
+			};
+			bind(new TypeLiteral<Tag<CenteredParagraphChunk>>() {}).toInstance(new Tag<CenteredParagraphChunk>() {
+				public String parse(CenteredParagraphChunk chunk) {
+					return chunk.getContent();
+				}
+				
+			});
 			bind(new TypeLiteral<Tag<ParagraphChunk>>() {}).toInstance(new Tag<ParagraphChunk>() {
 				public String parse(ParagraphChunk chunk) {
 					return chunk.getContent();
 				}
 				
 			});
-			bind(new TypeLiteral<Tag<IntroductionChunk>>() {}).toInstance(new Tag<IntroductionChunk>() {
-				public String parse(IntroductionChunk chunk) {
+			bind(new TypeLiteral<Tag<ImageChunk>>() {}).toInstance(new Tag<ImageChunk>() {
+				public String parse(ImageChunk chunk) {
+					return chunk.getPath();
+				}
+				
+			});
+			bind(new TypeLiteral<Tag<CodeChunk>>() {}).toInstance(new Tag<CodeChunk>() {
+				public String parse(CodeChunk chunk) {
 					return chunk.getContent();
 				}
 				
 			});
+			bind(new TypeLiteral<Tag<IntroductionChunk>>() {}).toInstance(tag);
+			bind(new TypeLiteral<Tag<BoxChunk>>() {}).toInstance(tag);
+			bind(new TypeLiteral<Tag<ListChunk>>() {}).toInstance(tag);
+			bind(new TypeLiteral<Tag<ItemChunk>>() {}).toInstance(tag);
+			bind(new TypeLiteral<Tag<TableChunk>>() {}).toInstance(tag);
+			bind(new TypeLiteral<Tag<TableRowChunk>>() {}).toInstance(tag);
+			bind(new TypeLiteral<Tag<TableColumnChunk>>() {}).toInstance(tag);
 		}
 
 		public void inject(Book book) {
