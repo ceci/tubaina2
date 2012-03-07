@@ -8,6 +8,7 @@ import br.com.caelum.tubaina.chunk.CenteredParagraphChunk;
 import br.com.caelum.tubaina.chunk.CodeChunk;
 import br.com.caelum.tubaina.chunk.ExerciseChunk;
 import br.com.caelum.tubaina.chunk.ImageChunk;
+import br.com.caelum.tubaina.chunk.IntroductionChunk;
 import br.com.caelum.tubaina.chunk.ItemChunk;
 import br.com.caelum.tubaina.chunk.ListChunk;
 import br.com.caelum.tubaina.chunk.NoteChunk;
@@ -33,6 +34,7 @@ public class HtmlModule extends AbstractModule {
 		bind(new TypeLiteral<Tag<CodeChunk>>() {}).to(CodeTag.class);
 		bind(new TypeLiteral<Tag<ExerciseChunk>>() {}).to(ExerciseTag.class);
 		bind(new TypeLiteral<Tag<ImageChunk>>() {}).to(ImageTag.class);
+		bind(new TypeLiteral<Tag<IntroductionChunk>>() {}).to(IntroductionTag.class);
 		bind(new TypeLiteral<Tag<ItemChunk>>() {}).to(ItemTag.class);
 		bind(new TypeLiteral<Tag<ListChunk>>() {}).to(ListTag.class);
 		bind(new TypeLiteral<Tag<NoteChunk>>() {}).to(NoteTag.class);

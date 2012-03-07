@@ -11,7 +11,7 @@ public class ImageChunk extends AbstractChunk<ImageChunk> {
 	private final int width;
 
 	public ImageChunk(String path, String options, int width) {
-		this.options = options;
+		this.options = options == null ? "" : options;
 		this.path = path;
 		this.width = width;
 	}		

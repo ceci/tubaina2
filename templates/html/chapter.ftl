@@ -8,7 +8,7 @@
 		
 		<br />
 
-    	${chapter.getIntroduction(parser)}
+    	${chapter.getIntroduction()}
 	
 	<!-- Table of contents of the chapter-->
 	<#if 0 < chapter.sections.size()>

@@ -9,11 +9,14 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.caelum.tubaina.Book;
 import br.com.caelum.tubaina.Chapter;
+import br.com.caelum.tubaina.InjectUtils;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.builder.BookBuilder;
 import br.com.caelum.tubaina.builder.ChapterBuilder;
 import br.com.caelum.tubaina.format.html.ChapterToString;
+import br.com.caelum.tubaina.format.html.HtmlModule;
 import br.com.caelum.tubaina.format.html.HtmlParser;
 import br.com.caelum.tubaina.parser.Parser;
 import br.com.caelum.tubaina.parser.RegexConfigurator;
@@ -57,7 +60,10 @@ public class ChapterToStringTest {
 		Chapter c = createChapter("introducao", "[section primeira] conteudo da primeira "
 				+ "\n[section segunda] conteudo da segunda");
 
-		String string = chapterToString.generateChapter(new BookBuilder("meu-livro").build(), c, 1, 1).toString();
+		Book book = new BookBuilder("meu-livro").build();
+		book.getChapters().add(c);
+		InjectUtils.inject(book, new HtmlModule());
+		String string = chapterToString.generateChapter(book, c, 1, 1).toString();
 
 		Assert.assertEquals(2, countOccurrences(string, sectionIdentifier));
 		Assert.assertEquals(1, countOccurrences(string, "href=\"../../livro/01-capitulo/01-primeira/\""));
@@ -69,7 +75,10 @@ public class ChapterToStringTest {
 	@Test
 	public void testGenerateChapterWithIntroduction() {
 		Chapter c = createChapter("conteudo da secao vazia", "");
-		String string = chapterToString.generateChapter(new BookBuilder("meu-livro").build(), c, 2, 1).toString();
+		Book book = new BookBuilder("meu-livro").build();
+		book.getChapters().add(c);
+		InjectUtils.inject(book, new HtmlModule());
+		String string = chapterToString.generateChapter(book, c, 2, 1).toString();
 
 		Assert.assertEquals(0, countOccurrences(string, sectionIdentifier));
 		Assert.assertEquals(1, countOccurrences(string, "<span class=\"chapterNumber\">2<"));
@@ -80,8 +89,11 @@ public class ChapterToStringTest {
 		Chapter c = createChapter("introducao", "[section primeira] conteudo da primeira "
 				+ "\n[section segunda] conteudo da segunda");
 
-		String head = chapterToString.generateFlatChapterHead(new BookBuilder("").build(), c, 1, 1).toString();
-		String tail = chapterToString.generateFlatChapterTail(new BookBuilder("").build(), c, 1, 1).toString();
+		Book book = new BookBuilder("").build();
+		book.getChapters().add(c);
+		InjectUtils.inject(book, new HtmlModule());
+		String head = chapterToString.generateFlatChapterHead(book, c, 1, 1).toString();
+		String tail = chapterToString.generateFlatChapterTail(book, c, 1, 1).toString();
 		String string = head + tail;
 
 		Assert.assertEquals(2, countOccurrences(string, sectionIdentifier));
@@ -94,8 +106,11 @@ public class ChapterToStringTest {
 	@Test
 	public void testGenerateFlatChapterWithIntroduction() {
 		Chapter c = createChapter("conteudo da secao vazia", "");
-		String head = chapterToString.generateFlatChapterHead(new BookBuilder("").build(), c, 1, 1).toString();
-		String tail = chapterToString.generateFlatChapterTail(new BookBuilder("").build(), c, 1, 1).toString();
+		Book book = new BookBuilder("").build();
+		book.getChapters().add(c);
+		InjectUtils.inject(book, new HtmlModule());
+		String head = chapterToString.generateFlatChapterHead(book, c, 1, 1).toString();
+		String tail = chapterToString.generateFlatChapterTail(book, c, 1, 1).toString();
 		String string = head + tail;
 
 		Assert.assertEquals(0, countOccurrences(string, sectionIdentifier));

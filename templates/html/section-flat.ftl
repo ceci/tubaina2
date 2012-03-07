@@ -10,7 +10,7 @@
 
 	   	
 	   	<#list section.chunks as chunk>
-	    	${chunk.getContent(parser)!""}
+	    	${chunk.asString()!""}
 	   	</#list>
 		
 		<br/>

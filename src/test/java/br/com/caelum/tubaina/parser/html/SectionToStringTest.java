@@ -3,16 +3,19 @@ package br.com.caelum.tubaina.parser.html;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.Section;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.builder.BookBuilder;
 import br.com.caelum.tubaina.builder.SectionBuilder;
+import br.com.caelum.tubaina.format.html.HtmlModule;
 import br.com.caelum.tubaina.format.html.HtmlParser;
 import br.com.caelum.tubaina.format.html.SectionToString;
 import br.com.caelum.tubaina.parser.Parser;
@@ -40,7 +43,12 @@ public class SectionToStringTest {
 	}
 
 	private Section createSection(final String sectionText) {
-		return new SectionBuilder("Title", sectionText, new ArrayList<Resource>()).build();
+		Section section = new SectionBuilder("Title", sectionText, new ArrayList<Resource>()).build();
+		List<Chunk> chunks = section.getChunks();
+		for (Chunk chunk : chunks) {
+			new HtmlModule().inject(chunk);
+		}
+		return section;
 	}
 
 	private int countOccurrences(final String text, final String substring) {

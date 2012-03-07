@@ -9,7 +9,9 @@ import org.junit.Test;
 
 import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.builder.ChunkSplitter;
+import br.com.caelum.tubaina.builder.MockModule;
 import br.com.caelum.tubaina.chunk.ItemChunk;
+import br.com.caelum.tubaina.format.html.HtmlModule;
 import br.com.caelum.tubaina.resources.Resource;
 
 public class ItemReplacerTest {
@@ -27,6 +29,9 @@ public class ItemReplacerTest {
 				+ "/**\n" + " * texto qualquer\n\n" + " *outro comentario\n" + "[/code]\n"
 				+ "  *mas que isso seja outro item";
 		List<Chunk> chunks = new ChunkSplitter(resources, "list").splitChunks(test);
+		for (Chunk chunk : chunks) {
+			new MockModule().inject(chunk);
+		}
 		Assert.assertEquals(2, chunks.size());
 		Assert.assertEquals(ItemChunk.class, chunks.get(0).getClass());
 		Assert.assertEquals("quero que o codigo java abaixo não tenha itens" + "blah blah \n" + "/**\n"
