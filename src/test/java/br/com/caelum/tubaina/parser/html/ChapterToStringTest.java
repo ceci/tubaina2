@@ -3,6 +3,7 @@ package br.com.caelum.tubaina.parser.html;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import junit.framework.Assert;
 
@@ -59,7 +60,7 @@ public class ChapterToStringTest {
 		Chapter c = createChapter("introducao", "[section primeira] conteudo da primeira "
 				+ "\n[section segunda] conteudo da segunda");
 
-		Book book = new BookBuilder("meu-livro").build();
+		Book book = new Book("nome", new ArrayList<Chapter>(Arrays.asList(c)), false);
 		book.getChapters().add(c);
 		new HtmlModule().inject(book);
 		String string = chapterToString.generateChapter(book, c, 1, 1).toString();
@@ -74,8 +75,7 @@ public class ChapterToStringTest {
 	@Test
 	public void testGenerateChapterWithIntroduction() {
 		Chapter c = createChapter("conteudo da secao vazia", "");
-		Book book = new BookBuilder("meu-livro").build();
-		book.getChapters().add(c);
+		Book book = new Book("nome", new ArrayList<Chapter>(Arrays.asList(c)), false);
 		new HtmlModule().inject(book);
 		String string = chapterToString.generateChapter(book, c, 2, 1).toString();
 
@@ -88,8 +88,7 @@ public class ChapterToStringTest {
 		Chapter c = createChapter("introducao", "[section primeira] conteudo da primeira "
 				+ "\n[section segunda] conteudo da segunda");
 
-		Book book = new BookBuilder("").build();
-		book.getChapters().add(c);
+		Book book = new Book("nome", new ArrayList<Chapter>(Arrays.asList(c)), false);
 		new HtmlModule().inject(book);
 		String head = chapterToString.generateFlatChapterHead(book, c, 1, 1).toString();
 		String tail = chapterToString.generateFlatChapterTail(book, c, 1, 1).toString();
@@ -105,8 +104,7 @@ public class ChapterToStringTest {
 	@Test
 	public void testGenerateFlatChapterWithIntroduction() {
 		Chapter c = createChapter("conteudo da secao vazia", "");
-		Book book = new BookBuilder("").build();
-		book.getChapters().add(c);
+		Book book = new Book("nome", new ArrayList<Chapter>(Arrays.asList(c)), false);
 		new HtmlModule().inject(book);
 		String head = chapterToString.generateFlatChapterHead(book, c, 1, 1).toString();
 		String tail = chapterToString.generateFlatChapterTail(book, c, 1, 1).toString();

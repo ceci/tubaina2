@@ -4,18 +4,12 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
 
 import br.com.caelum.tubaina.Book;
-import br.com.caelum.tubaina.Chapter;
-import br.com.caelum.tubaina.TubainaException;
+import br.com.caelum.tubaina.parser.TubainaParser;
 
 public class BookBuilder {
 
-	private final Logger LOG = Logger.getLogger(BookBuilder.class);
 	private final String name;
 	
 	private final List<Reader> readers = new ArrayList<Reader>();
@@ -33,58 +27,15 @@ public class BookBuilder {
 	}
 	
 	public Book build() {
-		return this.build(false);
+		return build(false);
 	}
 	
 	public Book build(boolean showNotes) {
-		List<Chapter> chapters = new ArrayList<Chapter>();
-		for (Reader reader : readers) {
-			LOG.info("Parsing chapter " + Chapter.getChaptersCount());
-			Scanner scanner = new Scanner(reader);
-			scanner.useDelimiter("$$");
-			if (scanner.hasNext())
-				chapters.addAll(parse(scanner.next()));
+		String[] strings = new String[readers.size()];
+		for (int i = 0; i < readers.size(); i++) {
+			String content = new Scanner(readers.get(i)).useDelimiter("$$").next();
+			strings[i] = content;
 		}
-		return new Book(name, chapters, showNotes);
+		return new TubainaParser(name, showNotes).generate(strings);
 	}
-
-	private List<Chapter> parse(String text) {
-		Pattern pattern = Pattern.compile("(?i)(?s)(?m)^\\[chapter(.*?)\\](.*?)(\n\\[chapter|\\z)");
-		Matcher matcher = pattern.matcher(text);
-
-		List<Chapter> chapters = new ArrayList<Chapter>();
-
-		Integer offset = 0;
-
-		while (matcher.find(offset)) {
-			
-			
-			String title = matcher.group(1).trim();
-			String content = matcher.group(2);
-			offset = matcher.end(2);
-
-			
-			Pattern introductionPattern = Pattern.compile("(?i)(?s)(.*?)(?:\\[section|\\z)");
-			Matcher introductionMatcher = introductionPattern.matcher(content);
-			
-			String introduction = "";
-			if (introductionMatcher.find())
-				introduction = introductionMatcher.group(1);
-			
-			content = content.substring(introduction.length());
-
-			Chapter chapter = new ChapterBuilder(title, introduction, content).build();
-			chapters.add(chapter);
-			
-		}
-		
-		//TODO : Refactoring
-		if(chapters.size() > 1) {
-			throw new TubainaException("Only one [chapter] element is allowed per file.");
-		}
-		
-		return chapters;
-	}
-
-
 }

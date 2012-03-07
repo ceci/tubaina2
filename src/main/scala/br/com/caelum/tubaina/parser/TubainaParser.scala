@@ -13,9 +13,11 @@ import br.com.caelum.tubaina.TubainaException
 import br.com.caelum.tubaina.resources.ResourceLocator
 import javax.imageio.ImageIO
 import java.io.IOException
+import java.io.Reader
+import java.util.Scanner
 
-class TubainaParser(bookName:String) extends RegexParsers {
-
+class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
+	def this(bookName:String) = this(bookName, false)
   var _skip = true
   override def skipWhitespace = _skip
   
@@ -122,7 +124,7 @@ class TubainaParser(bookName:String) extends RegexParsers {
   def p(s:Parser[String]) = s
 
   @varargs
-  def generate(toParse:String*) = {
+  def generate(toParse:String*):Book = {
 	  val chapters = toParse.map { chap =>
       parseAll(chapter, chap) match {
 	    case Success(r, q) => r
@@ -132,6 +134,7 @@ class TubainaParser(bookName:String) extends RegexParsers {
 	  }
     }
     
-    new Book(bookName, chapters, false)
+    new Book(bookName, chapters, showNotes)
   }
+  
 }
