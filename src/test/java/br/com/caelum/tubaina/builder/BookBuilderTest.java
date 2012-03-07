@@ -4,8 +4,6 @@ import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import net.vidageek.mirror.dsl.Mirror;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +11,6 @@ import org.junit.Test;
 import br.com.caelum.tubaina.Book;
 import br.com.caelum.tubaina.Chapter;
 import br.com.caelum.tubaina.Chunk;
-import br.com.caelum.tubaina.InjectUtils;
 import br.com.caelum.tubaina.Section;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.chunk.BoxChunk;
@@ -24,9 +21,6 @@ import br.com.caelum.tubaina.chunk.ListChunk;
 import br.com.caelum.tubaina.chunk.ParagraphChunk;
 import br.com.caelum.tubaina.chunk.TableChunk;
 import br.com.caelum.tubaina.resources.ResourceLocator;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 public class BookBuilderTest {
 
@@ -50,7 +44,7 @@ public class BookBuilderTest {
 
 		builder.add(new StringReader("[chapter Introdução]\n" + "Algum texto de introdução\n"));
 		Book book = builder.build();
-		InjectUtils.inject(book, module);
+		module.inject(book);
 		Assert.assertEquals("livro", book.getName());
 
 		List<Chapter> chapters = book.getChapters();
@@ -141,7 +135,7 @@ public class BookBuilderTest {
 		BookBuilder builder = new BookBuilder("livro");
 		builder.add(new StringReader(string));
 		Book b = builder.build();
-		InjectUtils.inject(b, module);
+		module.inject(b);
 		List<Chapter> chapters = b.getChapters();
 		return chapters;
 	}

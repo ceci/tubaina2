@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.Book;
-import br.com.caelum.tubaina.InjectUtils;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.builder.BookBuilder;
@@ -66,7 +65,7 @@ public class FlatHtmlGeneratorTest {
 
 	@Test
 	public void testGenerator() throws IOException {
-		InjectUtils.inject(book, new HtmlModule());
+		new HtmlModule().inject(book);
 		generator.generate(book, temp);
 
 		File livro = new File(temp, "livro/");
@@ -108,7 +107,7 @@ public class FlatHtmlGeneratorTest {
 		BookBuilder builder = new BookBuilder("Com imagens");
 		builder.add(new StringReader("[chapter qualquer um]\n" + "[img baseJpgImage.jpg]"));
 		Book b = builder.build();
-		InjectUtils.inject(b, new HtmlModule());
+		new HtmlModule().inject(b);
 
 		generator.generate(b, temp);
 		// testar se a imagem foi copiada pro diretorio images
@@ -126,7 +125,7 @@ public class FlatHtmlGeneratorTest {
 		builder.add(new StringReader("[chapter qualquer um]\n" + "[img baseJpgImage.jpg]\n[img baseJpgImage.jpg]"));
 
 		Book b = builder.build();
-		InjectUtils.inject(b, new HtmlModule());
+		new HtmlModule().inject(b);
 		try {
 			generator.generate(b, temp);
 		} catch (TubainaException t) {
@@ -141,7 +140,7 @@ public class FlatHtmlGeneratorTest {
 		builder.add(new StringReader("[chapter qualquer um]\n" + "[img src/test/resources/someImage.gif]"));
 		try {
 			Book b = builder.build();
-			InjectUtils.inject(b, new HtmlModule());
+			new HtmlModule().inject(b);
 			generator.generate(b, temp);
 			Assert.fail("Should raise an exception");
 		} catch (TubainaException t) {

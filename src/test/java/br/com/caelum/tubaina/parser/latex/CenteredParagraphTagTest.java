@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.chunk.CenteredParagraphChunk;
-import br.com.caelum.tubaina.format.latex.CenteredParagraphTag;
 
 public class CenteredParagraphTagTest extends AbstractTagTest {
 	@Test

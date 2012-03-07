@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.Book;
-import br.com.caelum.tubaina.InjectUtils;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.builder.BookBuilder;
@@ -76,7 +75,7 @@ public class SingleHtmlGeneratorTest {
 		
 		builder.add(new StringReader("[chapter Introdução]\n" + "Algum texto de introdução\n"));
 		Book book = builder.build();
-		InjectUtils.inject(book, new HtmlModule());
+		new HtmlModule().inject(book);
 		return book;
 	}
 	
@@ -102,7 +101,7 @@ public class SingleHtmlGeneratorTest {
 										"Uma introdução com imagem: \n\n" +
 										"[img basePngImage.png]"));
 		Book imageBook = builder.build();
-		InjectUtils.inject(imageBook, new HtmlModule());
+		new HtmlModule().inject(imageBook);
 		generator.generate(imageBook, directory);
 		
 		File bookRoot = new File(directory, "com-imagens/");
@@ -127,7 +126,7 @@ public class SingleHtmlGeneratorTest {
 				"Uma introdução com imagem: \n\n" +
 				"[img basePngImage.png]"));
 		Book imageBook = builder.build();
-		InjectUtils.inject(imageBook, new HtmlModule());
+		new HtmlModule().inject(imageBook);
 		generator.generate(imageBook, directory);
 		
 		File bookRoot = new File(directory, "com-imagens/");
@@ -142,7 +141,7 @@ public class SingleHtmlGeneratorTest {
 		BookBuilder builder = new BookBuilder("Com imagens");
 		builder.add(new StringReader("[chapter qualquer um]\n" + "[img baseJpgImage.jpg]"));
 		Book b = builder.build();
-		InjectUtils.inject(b, new HtmlModule());
+		new HtmlModule().inject(b);
 		generator.generate(b, directory);
 		// testar se a imagem foi copiada pro diretorio images
 		File chapterDir = new File(directory, "com-imagens/qualquer-um/");
@@ -159,7 +158,7 @@ public class SingleHtmlGeneratorTest {
 		builder.add(new StringReader("[chapter qualquer um]\n" + "[img baseJpgImage.jpg]\n[img baseJpgImage.jpg]"));
 
 		Book b = builder.build();
-		InjectUtils.inject(b, new HtmlModule());
+		new HtmlModule().inject(b);
 		try {
 			generator.generate(b, directory);
 		} catch (TubainaException e) {

@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import br.com.caelum.tubaina.chunk.CodeChunk;
 import br.com.caelum.tubaina.format.latex.CodeTag;
-import br.com.caelum.tubaina.parser.SimpleIndentator;
 
 
 public class CodeTagTest extends AbstractTagTest {

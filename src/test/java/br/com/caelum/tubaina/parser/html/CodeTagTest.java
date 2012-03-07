@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.chunk.CodeChunk;
-import br.com.caelum.tubaina.format.html.CodeTag;
 
 
 public class CodeTagTest extends AbstractTagTest {

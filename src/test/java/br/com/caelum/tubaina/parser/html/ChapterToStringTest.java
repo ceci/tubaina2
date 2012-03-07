@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import br.com.caelum.tubaina.Book;
 import br.com.caelum.tubaina.Chapter;
-import br.com.caelum.tubaina.InjectUtils;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.builder.BookBuilder;
 import br.com.caelum.tubaina.builder.ChapterBuilder;
@@ -62,7 +61,7 @@ public class ChapterToStringTest {
 
 		Book book = new BookBuilder("meu-livro").build();
 		book.getChapters().add(c);
-		InjectUtils.inject(book, new HtmlModule());
+		new HtmlModule().inject(book);
 		String string = chapterToString.generateChapter(book, c, 1, 1).toString();
 
 		Assert.assertEquals(2, countOccurrences(string, sectionIdentifier));
@@ -77,7 +76,7 @@ public class ChapterToStringTest {
 		Chapter c = createChapter("conteudo da secao vazia", "");
 		Book book = new BookBuilder("meu-livro").build();
 		book.getChapters().add(c);
-		InjectUtils.inject(book, new HtmlModule());
+		new HtmlModule().inject(book);
 		String string = chapterToString.generateChapter(book, c, 2, 1).toString();
 
 		Assert.assertEquals(0, countOccurrences(string, sectionIdentifier));
@@ -91,7 +90,7 @@ public class ChapterToStringTest {
 
 		Book book = new BookBuilder("").build();
 		book.getChapters().add(c);
-		InjectUtils.inject(book, new HtmlModule());
+		new HtmlModule().inject(book);
 		String head = chapterToString.generateFlatChapterHead(book, c, 1, 1).toString();
 		String tail = chapterToString.generateFlatChapterTail(book, c, 1, 1).toString();
 		String string = head + tail;
@@ -108,7 +107,7 @@ public class ChapterToStringTest {
 		Chapter c = createChapter("conteudo da secao vazia", "");
 		Book book = new BookBuilder("").build();
 		book.getChapters().add(c);
-		InjectUtils.inject(book, new HtmlModule());
+		new HtmlModule().inject(book);
 		String head = chapterToString.generateFlatChapterHead(book, c, 1, 1).toString();
 		String tail = chapterToString.generateFlatChapterTail(book, c, 1, 1).toString();
 		String string = head + tail;

@@ -13,11 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.Book;
-import br.com.caelum.tubaina.InjectUtils;
 import br.com.caelum.tubaina.TubainaBuilder;
 import br.com.caelum.tubaina.TubainaException;
 import br.com.caelum.tubaina.builder.BookBuilder;
-import br.com.caelum.tubaina.format.html.HtmlModule;
 import br.com.caelum.tubaina.format.latex.LatexGenerator;
 import br.com.caelum.tubaina.format.latex.LatexModule;
 import br.com.caelum.tubaina.format.latex.LatexParser;
@@ -61,7 +59,7 @@ public class LatexGeneratorTest {
 
 	@Test
 	public void testGenerator() throws IOException {
-		InjectUtils.inject(book, new LatexModule());
+		new LatexModule().inject(book);
 		generator.generate(book, temp);
 
 		// Book LaTeX
@@ -93,7 +91,7 @@ public class LatexGeneratorTest {
 		BookBuilder builder = new BookBuilder("Com imagens");
 		builder.add(new StringReader("[chapter qualquer um]\n" + "[img baseJpgImage.jpg]"));
 		Book b = builder.build();
-		InjectUtils.inject(b, new LatexModule());
+		new LatexModule().inject(b);
 		generator.generate(b, temp);
 
 		File[] images = temp.listFiles(new FilenameFilter() {
@@ -113,7 +111,7 @@ public class LatexGeneratorTest {
 		builder.add(new StringReader("[chapter qualquer um]\n" + "[img baseJpgImage.jpg]\n[img baseJpgImage.jpg]"));
 
 		Book b = builder.build();
-		InjectUtils.inject(b, new LatexModule());
+		new LatexModule().inject(b);
 		try {
 			generator.generate(b, temp);
 		} catch (TubainaException t) {
@@ -148,7 +146,7 @@ public class LatexGeneratorTest {
 		BookBuilder builder = new BookBuilder("Do Instrutor");
 		builder.add(new StringReader("[chapter com notas]\n" + "[note]uma nota para o instrutor[/note]"));
 		Book b = builder.build(true);
-		InjectUtils.inject(b, new LatexModule());
+		new LatexModule().inject(b);
 		Assert.assertTrue(b.isInstructorBook());
 		customGenerator.generate(b, temp);
 		File texFile = new File(temp, "teste.tex");
@@ -163,7 +161,7 @@ public class LatexGeneratorTest {
 		BookBuilder builder = new BookBuilder("Do Aluno");
 		builder.add(new StringReader("[chapter com notas]\n" + "[note]uma nota para o instrutor[/note]"));
 		Book b = builder.build(false);
-		InjectUtils.inject(b, new LatexModule());
+		new LatexModule(false).inject(b);
 		Assert.assertFalse(b.isInstructorBook());
 		generator.generate(b, temp);
 		File texFile = new File(temp, "teste.tex");

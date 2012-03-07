@@ -2,11 +2,9 @@ package br.com.caelum.tubaina.parser.html;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.chunk.ImageChunk;
-import br.com.caelum.tubaina.format.html.ImageTag;
 
 public class ImageTagTest extends AbstractTagTest {
 
