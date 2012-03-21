@@ -1,23 +1,19 @@
 package br.com.caelum.tubaina.parser;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.caelum.tubaina.Chunk;
 import br.com.caelum.tubaina.CompositeChunk;
 import br.com.caelum.tubaina.TubainaException;
-import br.com.caelum.tubaina.builder.replacer.ListReplacer;
 import br.com.caelum.tubaina.builder.replacer.Replacer;
 import br.com.caelum.tubaina.chunk.ItemChunk;
 import br.com.caelum.tubaina.chunk.ListChunk;
 import br.com.caelum.tubaina.chunk.ParagraphChunk;
-import br.com.caelum.tubaina.resources.Resource;
 
 public class ListReplacerTest {
 
@@ -42,36 +38,44 @@ public class ListReplacerTest {
 
 	@Test
 	public void testCreateSublistsProperly() throws Exception {
-		String list = "[list number]\n" + "   * primeiro item number\n" + "   [list roman]\n"
-				+ "     *primeiro item roman\n" + "     [list letter]\n" + "        *primeiro item letter\n"
-				+ "        *segundo item letter\n" + "     [/list]\n" + "     *segundo item roman\n"
-				+ "     *terceiro item roman\n" + "   [/list]\n" + "*segundo item number\n" + "*terceiro item number\n"
-				+ "[/list]";
+		String list = 
+				"[list number]\n" + 
+				"   * primeiro item number\n" + 
+				"   [list roman]\n" + 
+				"     *primeiro item roman\n" + 
+				"     [list letter]\n" + 
+				"        *primeiro item letter\n" + 
+				"        *segundo item letter\n" + 
+				"     [/list]\n" + 
+				"     *segundo item roman\n" + 
+				"     *terceiro item roman\n" + 
+				"   [/list]\n" + 
+				"	*segundo item number\n" + 
+				"	*terceiro item number\n" + 
+				"[/list]";
 		Assert.assertTrue(replacer.accepts(list));
 		String resto = replacer.execute(list, chunks);
 		Assert.assertEquals("", resto);
 		Assert.assertEquals(1, chunks.size());
 		Assert.assertEquals(ListChunk.class, chunks.get(0).getClass());
 
-		Field listBody = CompositeChunk.class.getDeclaredField("body");
-		listBody.setAccessible(true);
-
-		List<Chunk> chunks1 = (List<Chunk>) listBody.get(chunks.get(0));
+		List<Chunk> chunks1 = getBody(chunks.get(0));
 		Assert.assertEquals(3, chunks1.size());
 		Assert.assertEquals(ItemChunk.class, chunks1.get(0).getClass());
 		Assert.assertEquals(ItemChunk.class, chunks1.get(1).getClass());
 		Assert.assertEquals(ItemChunk.class, chunks1.get(2).getClass());
 
-		Field itemBody = ItemChunk.class.getDeclaredField("body");
-		itemBody.setAccessible(true);
-
-		List<Chunk> chunks2 = (List<Chunk>) itemBody.get(chunks1.get(0));
+		List<Chunk> chunks2 = getBody(chunks1.get(0));
 		Assert.assertEquals(2, chunks2.size());
 		Assert.assertEquals(ParagraphChunk.class, chunks2.get(0).getClass());
 		Assert.assertEquals(ListChunk.class, chunks2.get(1).getClass());
-		List<Chunk> chunks3 = (List<Chunk>) listBody.get(chunks2.get(1));
-		List<Chunk> chunks4 = (List<Chunk>) itemBody.get(chunks3.get(0));
+		List<Chunk> chunks3 = getBody(chunks2.get(1));
+		List<Chunk> chunks4 = getBody(chunks3.get(0));
 		Assert.assertEquals(ListChunk.class, chunks4.get(1).getClass());
+	}
+
+	private List<Chunk> getBody(Chunk chunk) {
+		return ((CompositeChunk<?>) chunk).getBody();
 	}
 
 	@Test
@@ -84,7 +88,7 @@ public class ListReplacerTest {
 		Assert.assertEquals(ListChunk.class, chunks.get(0).getClass());
 	}
 
-	@Test @Ignore
+	@Test
 	public void testReplacesListWithListsInside() {
 		String list = "[list]*texto solto[list]* blabla[/list] ahahah[/list] oi resto";
 		Assert.assertTrue(replacer.accepts(list));

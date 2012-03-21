@@ -93,7 +93,12 @@ class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
       new ImageChunk(path, opts.getOrElse("").trim(), width) 
   }
   
-  def item:Parser[ItemChunk] = "*" ~> elem ~ ((not("[/list]" | "^\\s*\\*".r) ~> elem)*) ^^ {
+  def itemChunk:Parser[Chunk] = ((not(paragraph) ~> elem) | "((?!^\\s*\\*|\\[).)+".r) ^^ {
+  	case e:String => new ParagraphChunk(e)
+    case e:Chunk => e
+  }
+  
+  def item:Parser[ItemChunk] = "*" ~> itemChunk ~ ((not("^\\s*\\*".r) ~> itemChunk)*) ^^ {
     case e ~ c => new ItemChunk(e :: c)
   }
   
