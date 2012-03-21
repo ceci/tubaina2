@@ -2,6 +2,7 @@ package br.com.caelum.tubaina.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,11 +18,10 @@ public class ExerciseReplacerTest {
 
 	private Replacer replacer;
 	private List<Chunk> chunks;
-	private List<Resource> resources;
 
 	@Before
 	public void setUp() {
-		resources = new ArrayList<Resource>();
+		ReplacerAdapterFactory.clear();
 		replacer = ReplacerAdapterFactory.replacerFor(ReplacerAdapterFactory.parser().exercises());
 		chunks = new ArrayList<Chunk>();
 	}
@@ -33,6 +33,8 @@ public class ExerciseReplacerTest {
 		String resto = replacer.execute(exercise, chunks);
 		Assert.assertEquals(" ola resto", resto);
 		Assert.assertEquals(1, chunks.size());
+		Set<Resource> resources = ReplacerAdapterFactory.resources();
+		Assert.assertTrue("Should not have created resources", resources.isEmpty());
 		Assert.assertEquals(ExerciseChunk.class, chunks.get(0).getClass());
 	}
 
@@ -43,6 +45,8 @@ public class ExerciseReplacerTest {
 		String resto = replacer.execute(exercise, chunks);
 		Assert.assertEquals(" ola resto", resto);
 		Assert.assertEquals(1, chunks.size());
+		Set<Resource> resources = ReplacerAdapterFactory.resources();
+		Assert.assertEquals("Should have created resources", 2,  resources.size());
 		Assert.assertEquals(ExerciseChunk.class, chunks.get(0).getClass());
 	}
 

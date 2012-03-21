@@ -19,6 +19,8 @@ import br.com.caelum.tubaina.resources.Resource
 import scala.collection.mutable
 import br.com.caelum.tubaina.resources.ImageResource
 import br.com.caelum.tubaina.resources.AnswerResource
+import br.com.caelum.tubaina.resources.IndexResource
+import br.com.caelum.tubaina.resources.ExerciseResource
 
 class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
 	val resources: mutable.Set[Resource]=mutable.Set()
@@ -54,7 +56,14 @@ class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
     }
 
   def exercises:Parser[ExerciseChunk] = "[exercise]" ~> ((question|todo)+) <~ "[/exercise]" ^^ {
-    case questions => new ExerciseChunk(questions)
+    case questions => 
+    	val chunks = questions.flatMap({
+    		case c:QuestionChunk => c.getBody
+    		case _ => Seq()
+    	})
+    	if (chunks.exists(_.isInstanceOf[AnswerChunk]))
+			resources += new ExerciseResource(ExerciseChunk.getExerciseCount());
+    	new ExerciseChunk(questions)
   }
   
   def question:Parser[QuestionChunk] = "[question]" ~> (content ~ (answer?) | (answer?) ~ content) <~ "[/question]" ^^ {
@@ -134,7 +143,13 @@ class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
 
   def todo:Parser[TodoChunk] = "(?i)\\[todo ".r ~> nonBracket <~ "]" ^^ (x => new TodoChunk(x))
   
-  def index:Parser[IndexChunk] = "(?i)\\[index ".r ~> nonBracket <~ "]" ^^ (x => new IndexChunk(x))
+  def index:Parser[IndexChunk] = "(?i)\\[index ".r ~> nonBracket <~ "]" ^^ {
+  	x => 
+  		val dirNumber = Chapter.getChaptersCount() + Section.getSectionsCount();
+		val resource = new IndexResource(x, dirNumber);
+		resources += resource;
+  		new IndexChunk(x)
+  }
   
   def elem:Parser[Chunk] = center.asInstanceOf[Parser[Chunk]] | table | list | image | code | box | note | exercises | todo | index | paragraph 
   
