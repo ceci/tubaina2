@@ -12,9 +12,10 @@ public class AnswerTagTest extends AbstractTagTest {
 	public void testAnswerTag(){
 		AnswerChunk answerChunk = new AnswerChunk(text("texto da resposta"));
 		String result = getContent(answerChunk);
-		Assert.assertEquals("<a class=\"answer\" onclick=\"toogleAnswer('answer0');\">" +
+		Assert.assertEquals(
+				String.format("<a class=\"answer\" onclick=\"toogleAnswer('answer%1$s');\">" +
 				"Click here for the answer</a><br /><div class=\"answer\" " +
-				"id=\"answer0\"><p>texto da resposta</p></div><br/>", result);
+				"id=\"answer%1$s\"><p>texto da resposta</p></div><br/>", answerChunk.getId()), result);
 	}
 }
 
