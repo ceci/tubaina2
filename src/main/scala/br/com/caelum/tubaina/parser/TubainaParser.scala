@@ -18,6 +18,7 @@ import java.util.Scanner
 import br.com.caelum.tubaina.resources.Resource
 import scala.collection.mutable
 import br.com.caelum.tubaina.resources.ImageResource
+import br.com.caelum.tubaina.resources.AnswerResource
 
 class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
 	val resources: mutable.Set[Resource]=mutable.Set()
@@ -65,7 +66,10 @@ class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
   }
   
   def answer:Parser[AnswerChunk] = "[answer]" ~> content <~ "[/answer]" ^^ {
-    case content => new AnswerChunk(content)
+    case content => 
+    	val chunk = new AnswerChunk(content)
+    	resources += new AnswerResource(chunk)
+    	chunk
   }
 
 //  def bold:Parser[Bold] = "**" ~> paragraph <~ "**" ^^ {p => Bold(p)}
