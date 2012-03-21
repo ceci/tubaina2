@@ -15,8 +15,17 @@ import javax.imageio.ImageIO
 import java.io.IOException
 import java.io.Reader
 import java.util.Scanner
+import br.com.caelum.tubaina.resources.Resource
+import scala.collection.mutable
+import br.com.caelum.tubaina.resources.ImageResource
 
 class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
+	val resources: mutable.Set[Resource]=mutable.Set()
+	private def consumeResources = {
+		val res = resources.toSeq
+		resources.clear()
+		res
+	} 
 	def this(bookName:String) = this(bookName, false)
   var _skip = true
   override def skipWhitespace = _skip
@@ -33,8 +42,8 @@ class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
 
   def chapter:Parser[Chapter] =
     p("[chapter " ~> nonBracket <~ "]") ~ (content?) ~ (section*) ^^ {
-      case name ~ Some(intro) ~ sections => new Chapter(name.trim(), new IntroductionChunk(intro), sections, Seq())
-      case name ~ None ~ sections => new Chapter(name.trim(), new IntroductionChunk(Seq(new ParagraphChunk(""))), sections, Seq())
+      case name ~ Some(intro) ~ sections => new Chapter(name.trim(), new IntroductionChunk(intro), sections, consumeResources)
+      case name ~ None ~ sections => new Chapter(name.trim(), new IntroductionChunk(Seq(new ParagraphChunk(""))), sections, consumeResources)
     }
   
   def section:Parser[Section] =
@@ -82,14 +91,15 @@ class TubainaParser(bookName:String, showNotes:Boolean) extends RegexParsers {
 
   def image:Parser[ImageChunk] = "[img " ~> "([^ \t\\]])+".r ~ (nonBracket?) <~ "]" ^^ {
     case path ~ opts => 
-      val image = ResourceLocator.getInstance().getFile(path);
+      val image = ResourceLocator.getInstance().getFile(path)
 		val width = 
 		  try {
-			ImageIO.read(image).getWidth();
+			ImageIO.read(image).getWidth()
 		  } catch {
 		    case e:IOException => throw new TubainaException("Image not existant", e)
-		    case e:NullPointerException => throw new TubainaException(path + " is not a valid image"); 
+		    case e:NullPointerException => throw new TubainaException(path + " is not a valid image")
 		  }
+  	  resources += new ImageResource(image, path)
       new ImageChunk(path, opts.getOrElse("").trim(), width) 
   }
   
